@@ -231,7 +231,8 @@ END
 		# but that is probably not worth the effort.
 
 		my $url = "http://connect.facebook.net/$self->{_alpha2}/all.js#xfbml=1";
-$rc .= "<!-- url - $url -->";
+		# Debug
+		# $rc .= "<!-- url - $url -->";
 		my $res;
 		if($self->{_cache}) {
 			$res = $self->{_cache}->get($url);
