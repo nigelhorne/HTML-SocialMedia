@@ -12,7 +12,7 @@ WriteMakefile(
       : ()),
     PL_FILES            => {},
     PREREQ_PM => {
-        'Test::More' => 0.82,	# Need new_ok()
+	'Test::Most' => 0,
 	'Test::NoWarnings' => 0,
 	'CGI::Lingua' => 0.26,	# Need subcountry_code_alpha2()
 	'I18N::LangTags::Detect' => 0,

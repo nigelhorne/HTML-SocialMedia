@@ -10,11 +10,11 @@ HTML::SocialMedia - Put social media links into your website
 
 =head1 VERSION
 
-Version 0.19
+Version 0.20
 
 =cut
 
-our $VERSION = '0.19';
+our $VERSION = '0.20';
 use constant DEFAULTFACEBOOKURL => 'http://connect.facebook.net/en_GB/all.js#xfbml=1';
 
 =head1 SYNOPSIS
@@ -28,6 +28,16 @@ This module eases links into Twitter, Facebook and Google's PlusOne.
 
 The language of the text displayed will depend on the client's choice, making
 HTML::SocialMedia ideal for running on multilingual sites.
+
+Takes optional parameter logger, an object which is used for warnings and
+traces.
+This logger object is an object that understands warn() and trace() messages,
+such as a L<Log::Log4perl> object.
+
+Takes optional parameter cache, an object which is used to cache country
+lookups.
+This cache object is an object that understands get() and set() messages,
+such as an L<CHI> object.
 
 =head1 SUBROUTINES/METHODS
 
@@ -75,6 +85,9 @@ sub new {
 	}
 	if($params{cache}) {
 		$args{cache} = $params{cache};
+	}
+	if($params{logger}) {
+		$args{logger} = $params{logger};
 	}
 	$lingua = CGI::Lingua->new(%args);
 	if((!defined($lingua)) && scalar($args{supported})) {
@@ -408,7 +421,7 @@ L<http://search.cpan.org/dist/HTML-SocialMedia/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2011-2012 Nigel Horne.
+Copyright 2011-2014 Nigel Horne.
 
 This program is released under the following licence: GPL
 

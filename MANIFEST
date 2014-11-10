@@ -2,14 +2,18 @@ Changes
 MANIFEST
 Makefile.PL
 README
+README.md
 ignore.txt
 lib/HTML/SocialMedia.pm
 t/00-load.t
+t/10-new.t
 t/as_string.t
 t/boiler.t
+t/changes.t
 t/coverage.t
 t/critic.t
 t/cv.t
+t/dist.t
 t/gv.t
 t/kwalitee.t
 t/manifest.t
@@ -19,8 +23,10 @@ t/pod-cm.t
 t/pod.t
 t/port.t
 t/prereq.t
+t/rt100242.t
 t/snippets.t
 t/spelling.t
+t/strict.t
 t/vars.t
 META.yml                                 Module meta-data (added by MakeMaker)
 MYMETA.json
