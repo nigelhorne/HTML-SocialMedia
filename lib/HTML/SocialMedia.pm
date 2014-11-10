@@ -143,7 +143,7 @@ sub as_string {
 	my ($self, %params) = @_;
 
 	unless($self->{_alpha2}) {
-		my $alpha2 = $self->{_lingua}->code_alpha2();
+		my $alpha2 = $self->{_lingua}->language_code_alpha2();
 
 		if($alpha2) {
 			my $salpha2 = $self->{_lingua}->sublanguage_code_alpha2();
@@ -160,7 +160,7 @@ sub as_string {
 				my $locale = $self->{_lingua}->locale();
 				if($locale) {
 					my @l = $locale->languages_official();
-					$alpha2 = lc($l[0]->code_alpha2()) . '_' . uc($locale->code_alpha2());
+					$alpha2 = lc($l[0]->language_code_alpha2()) . '_' . uc($locale->code_alpha2());
 				} else {
 					$alpha2 = undef;
 				}
@@ -171,12 +171,12 @@ sub as_string {
 			my $locale = $self->{_lingua}->locale();
 			if($locale) {
 				my @l = $locale->languages_official();
-				if(scalar(@l) && defined($l[0]->code_alpha2())) {
-					$alpha2 = lc($l[0]->code_alpha2()) . '_' . uc($locale->code_alpha2());
+				if(scalar(@l) && defined($l[0]->language_code_alpha2())) {
+					$alpha2 = lc($l[0]->language_code_alpha2()) . '_' . uc($locale->language_code_alpha2());
 				} else {
 					@l = $locale->languages();
 					if(scalar(@l)) {
-						$alpha2 = lc($l[0]->code_alpha2()) . '_' . uc($locale->code_alpha2());
+						$alpha2 = lc($l[0]->language_code_alpha2()) . '_' . uc($locale->language_code_alpha2());
 					}
 				}
 			}
