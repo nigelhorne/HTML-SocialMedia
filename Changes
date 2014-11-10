@@ -3,6 +3,7 @@ Revision history for HTML-SocialMedia
 0.20
 	Simplified the cache key
 	Don't instantiate a CGI::Info object, we can use a class method
+	Fix unitialised variable
 
 0.19	Fri Apr 27 13:36:21 BST 2012
 	Handle https://rt.cpan.org/Ticket/Display.html?id=57479
