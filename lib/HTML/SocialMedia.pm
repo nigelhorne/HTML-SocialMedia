@@ -39,6 +39,8 @@ lookups.
 This cache object is an object that understands get() and set() messages,
 such as an L<CHI> object.
 
+Takes optional parameter, which is a L<CGI::Lingua> object.
+
 =head1 SUBROUTINES/METHODS
 
 =head2 new
@@ -89,7 +91,7 @@ sub new {
 	if($params{logger}) {
 		$args{logger} = $params{logger};
 	}
-	$lingua = CGI::Lingua->new(%args);
+	$lingua = $params{lingua} || CGI::Lingua->new(%args);
 	if((!defined($lingua)) && scalar($args{supported})) {
 		$args{supported} = [];
 		$lingua = CGI::Lingua->new(%args);
