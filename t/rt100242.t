@@ -46,3 +46,11 @@ sub warn {
 	# ::diag($message);
 	::ok($message =~ /Can't determine language from IP 195.29.95.225, country hr/);
 }
+
+sub debug {
+	my $self = shift;
+	my $message = shift;
+
+	# Enable this for debugging
+	# ::diag($message);
+}
