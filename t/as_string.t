@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 45;
+use Test::More tests => 49;
 use Test::NoWarnings;
 
 BEGIN {
@@ -79,4 +79,10 @@ STRING: {
 	$ENV{'HTTP_USER_AGENT'} = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; fr-FR; rv:1.9.2.19) Gecko/20110707 Firefox/3.6.19';
 	$sm = new_ok('HTML::SocialMedia' => []);
 	ok($sm->as_string(google_plusone => 1) =~ /fr-FR/);
+
+	$sm = $sm->new();
+	isa_ok($sm, 'HTML::SocialMedia');
+	ok(defined($sm->as_string(reddit_button => 1)));
+	ok($sm->as_string(reddit_button => 1) =~ /reddit\.com/);
+	ok($sm->as_string(reddit_button => 1) !~ /linkedin/);
 }

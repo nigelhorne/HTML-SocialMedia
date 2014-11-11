@@ -1,6 +1,6 @@
 Revision history for HTML-SocialMedia
 
-0.21
+0.21	Tue Nov 11 08:50:50 EST 2014
 	Fix t/rt100242 failing when IP::Country is installed
 	Added optional CGI::Lingua argument to new()
 
