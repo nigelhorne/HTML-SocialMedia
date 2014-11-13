@@ -157,41 +157,37 @@ reddit_button: add a Reddit button
 sub as_string {
 	my ($self, %params) = @_;
 
+	my $lingua = $self->{_lingua};
+
 	unless($self->{_alpha2}) {
-		my $alpha2 = $self->{_lingua}->language_code_alpha2();
+		my $alpha2 = $lingua->language_code_alpha2();
+		my $locale = $lingua->locale();	# Locale::Object::Country
 
 		if($alpha2) {
-			my $salpha2 = $self->{_lingua}->sublanguage_code_alpha2();
-			unless($salpha2) {
-				my $locale = $self->{_lingua}->locale();
-				if($locale) {
-					$salpha2 = $locale->code_alpha2();
-				}
+			my $salpha2 = $lingua->sublanguage_code_alpha2();
+			if((!defined($salpha2)) && defined($locale)) {
+				$salpha2 = $locale->code_alpha2();
 			}
 			if($salpha2) {
 				$salpha2 = uc($salpha2);
 				$alpha2 .= "_$salpha2";
+			} elsif($locale) {
+				my @l = $locale->languages_official();
+				$alpha2 = lc($l[0]->language_code_alpha2()) . '_' . uc($locale->code_alpha2());
 			} else {
-				my $locale = $self->{_lingua}->locale();
-				if($locale) {
-					my @l = $locale->languages_official();
-					$alpha2 = lc($l[0]->language_code_alpha2()) . '_' . uc($locale->code_alpha2());
-				} else {
-					$alpha2 = undef;
-				}
+				$alpha2 = undef;
 			}
 		}
 
 		unless($alpha2) {
-			my $locale = $self->{_lingua}->locale();
 			if($locale) {
 				my @l = $locale->languages_official();
 				if(scalar(@l) && defined($l[0]->language_code_alpha2())) {
-					$alpha2 = lc($l[0]->language_code_alpha2()) . '_' . uc($locale->language_code_alpha2());
+					$alpha2 = lc($l[0]->language_code_alpha2()) . '_' . uc($locale->code_alpha2());
 				} else {
 					@l = $locale->languages();
 					if(scalar(@l)) {
-						$alpha2 = lc($l[0]->language_code_alpha2()) . '_' . uc($locale->language_code_alpha2());
+						$alpha2 = lc($l[0]->language_code_alpha2()) . '_' . uc($locale->code_alpha2());
 					}
 				}
 			}
@@ -206,7 +202,7 @@ sub as_string {
 
 	if($self->{_twitter}) {
 		if($params{twitter_follow_button}) {
-			my $language = $self->{_lingua}->language();
+			my $language = $lingua->language();
 			if(($language eq 'English') || ($language eq 'Unknown')) {
 				$rc = '<a href="http://twitter.com/' . $self->{_twitter} . '" class="twitter-follow-button">Follow @' . $self->{_twitter} . '</a>';
 			} else {
