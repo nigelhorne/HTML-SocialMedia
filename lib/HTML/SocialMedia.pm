@@ -61,52 +61,52 @@ set, such as L<CHI>.
 =cut
 
 sub new {
-	my ($proto, %params) = @_;
+	my $proto = shift;
 
 	my $class = ref($proto) || $proto;
+	my %params = (ref($_[0]) eq 'HASH') ? %{$_[0]} : @_;
 
-	my $lingua;
-	my %args;
-	if($params{twitter}) {
-		# Languages supported by Twitter according to
-		# https://twitter.com/about/resources/tweetbutton
-		$args{supported} = ['en', 'nl', 'fr', 'fr-fr', 'de', 'id', 'il', 'ja', 'ko', 'pt', 'ru', 'es', 'tr'],
-	} else {
-		# TODO: Google plus only supports the languages listed at
-		# http://www.google.com/webmasters/+1/button/index.html
-		require I18N::LangTags::Detect;
-
-		# Facebook supports just about everything
-		my @l = I18N::LangTags::implicate_supers_strictly(I18N::LangTags::Detect::detect());
-
-		if(@l) {
-			$args{supported} = [$l[0]];
+	my $lingua = $params{lingua};
+	unless(defined($lingua)) {
+		my %args;
+		if($params{twitter}) {
+			# Languages supported by Twitter according to
+			# https://twitter.com/about/resources/tweetbutton
+			$args{supported} = ['en', 'nl', 'fr', 'fr-fr', 'de', 'id', 'il', 'ja', 'ko', 'pt', 'ru', 'es', 'tr'],
 		} else {
+			# TODO: Google plus only supports the languages listed at
+			# http://www.google.com/webmasters/+1/button/index.html
+			require I18N::LangTags::Detect;
+
+			# Facebook supports just about everything
+			my @l = I18N::LangTags::implicate_supers_strictly(I18N::LangTags::Detect::detect());
+
+			if(@l) {
+				$args{supported} = [$l[0]];
+			} else {
+				$args{supported} = [];
+			}
+		}
+		if($params{cache}) {
+			$args{cache} = $params{cache};
+		}
+		if($params{logger}) {
+			$args{logger} = $params{logger};
+		}
+		$lingua = $params{lingua} || CGI::Lingua->new(%args);
+		if((!defined($lingua)) && scalar($args{supported})) {
 			$args{supported} = [];
+			$lingua = CGI::Lingua->new(%args);
 		}
 	}
-	if($params{cache}) {
-		$args{cache} = $params{cache};
-	}
-	if($params{logger}) {
-		$args{logger} = $params{logger};
-	}
-	$lingua = $params{lingua} || CGI::Lingua->new(%args);
-	if((!defined($lingua)) && scalar($args{supported})) {
-		$args{supported} = [];
-		$lingua = CGI::Lingua->new(%args);
-	}
 
-	my $self = {
+	return bless {
 		_lingua => $lingua,
 		_twitter => $params{twitter},
 		_twitter_related => $params{twitter_related},
 		_cache => $params{cache},
 		_alpha2 => undef,
-	};
-	bless $self, $class;
-
-	return $self;
+	}, $class;
 }
 
 =head2 as_string
@@ -173,7 +173,7 @@ sub as_string {
 				$alpha2 .= "_$salpha2";
 			} elsif($locale) {
 				my @l = $locale->languages_official();
-				$alpha2 = lc($l[0]->language_code_alpha2()) . '_' . uc($locale->code_alpha2());
+				$alpha2 = lc($l[0]->code_alpha2()) . '_' . uc($locale->code_alpha2());
 			} else {
 				$alpha2 = undef;
 			}
@@ -182,7 +182,7 @@ sub as_string {
 		unless($alpha2) {
 			if($locale) {
 				my @l = $locale->languages_official();
-				if(scalar(@l) && defined($l[0]->language_code_alpha2())) {
+				if(scalar(@l) && defined($l[0]->code_alpha2())) {
 					$alpha2 = lc($l[0]->code_alpha2()) . '_' . uc($locale->code_alpha2());
 				} else {
 					@l = $locale->languages();
