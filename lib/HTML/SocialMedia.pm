@@ -186,7 +186,7 @@ sub as_string {
 					$alpha2 = lc($l[0]->code_alpha2()) . '_' . uc($locale->code_alpha2());
 				} else {
 					@l = $locale->languages();
-					if(scalar(@l)) {
+					if(scalar(@l) && defined($l[0]->code_alpha2())) {
 						$alpha2 = lc($l[0]->code_alpha2()) . '_' . uc($locale->code_alpha2());
 					}
 				}
