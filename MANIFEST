@@ -27,6 +27,7 @@ t/rt100242.t
 t/snippets.t
 t/spelling.t
 t/strict.t
+t/undef.t
 t/vars.t
 META.yml                                 Module meta-data (added by MakeMaker)
 MYMETA.json
