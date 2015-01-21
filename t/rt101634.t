@@ -10,7 +10,7 @@ BEGIN {
 	use_ok('HTML::SocialMedia');
 }
 
-RT100242: {
+RT101634: {
 	# Stop I18N::LangTags::Detect from detecting something
 	delete $ENV{'LANGUAGE'};
 	delete $ENV{'LC_ALL'};
