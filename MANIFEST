@@ -28,6 +28,7 @@ t/snippets.t
 t/spelling.t
 t/strict.t
 t/undef.t
+t/unused.t
 t/used.t
 t/vars.t
 META.yml                                 Module meta-data (added by MakeMaker)
