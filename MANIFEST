@@ -1,4 +1,5 @@
 Changes
+LICENCE
 MANIFEST
 Makefile.PL
 README
@@ -24,10 +25,10 @@ t/pod.t
 t/port.t
 t/prereq.t
 t/rt100242.t
+t/rt101634.t
 t/snippets.t
 t/spelling.t
 t/strict.t
-t/undef.t
 t/unused.t
 t/used.t
 t/vars.t

@@ -10,11 +10,11 @@ HTML::SocialMedia - Put social media links into your website
 
 =head1 VERSION
 
-Version 0.21
+Version 0.22
 
 =cut
 
-our $VERSION = '0.21';
+our $VERSION = '0.22';
 use constant DEFAULTFACEBOOKURL => 'http://connect.facebook.net/en_GB/all.js#xfbml=1';
 
 =head1 SYNOPSIS
@@ -105,6 +105,7 @@ sub new {
 		_twitter => $params{twitter},
 		_twitter_related => $params{twitter_related},
 		_cache => $params{cache},
+		_logger => $params{logger},
 		_alpha2 => undef,
 	}, $class;
 }
@@ -257,8 +258,18 @@ END
 			# Resposnse is of type HTTP::Response
 			require LWP::UserAgent;
 
-			my $response = LWP::UserAgent->new(timeout => 10)->request(HTTP::Request->new(GET => $url));
-			if($response->is_success()) {
+			my $response;
+
+			eval {
+				$response = LWP::UserAgent->new(timeout => 10)->request(HTTP::Request->new(GET => $url));
+			};
+			if($@) {
+				if($self->{_logger}) {
+					$self->{_logger}->info($@);
+				}
+				$response = undef;
+			}
+			if(defined($response) && $response->is_success()) {
 				# If it's not supported, Facebook doesn't return an HTTP
 				# error such as 404, it returns a string, which no doubt
 				# will get changed at sometime in the future. Sigh.
@@ -419,7 +430,7 @@ L<http://search.cpan.org/dist/HTML-SocialMedia/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2011-2014 Nigel Horne.
+Copyright 2011-2015 Nigel Horne.
 
 This program is released under the following licence: GPL
 
