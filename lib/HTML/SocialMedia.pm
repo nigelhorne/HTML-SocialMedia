@@ -243,8 +243,9 @@ END
 		# but that is probably not worth the effort.
 
 		my $url = "http://connect.facebook.net/$self->{_alpha2}/all.js#xfbml=1";
-		# Debug
-		# $rc .= "<!-- url - $url -->";
+		if($self->{_logger}) {
+			$self->{_logger}->debug("URL $url");
+		}
 		my $res;
 		if($self->{_cache}) {
 			$res = $self->{_cache}->get($url);
@@ -433,7 +434,6 @@ L<http://search.cpan.org/dist/HTML-SocialMedia/>
 Copyright 2011-2015 Nigel Horne.
 
 This program is released under the following licence: GPL
-
 
 =cut
 
