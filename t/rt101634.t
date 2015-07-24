@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 3;
+use Test::Most tests => 3;
 
 # Test for "Use of uninitialized value in lc at /home/nigelhorne/perlmods/share/perl/5.14.2/HTML/SocialMedia.pm line 190"
 

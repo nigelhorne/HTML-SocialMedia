@@ -7,7 +7,8 @@ WriteMakefile(
     AUTHOR              => q{Nigel Horne <njh@bandsman.co.uk>},
     VERSION_FROM        => 'lib/HTML/SocialMedia.pm',
     ABSTRACT_FROM       => 'lib/HTML/SocialMedia.pm',
-    ($ExtUtils::MakeMaker::VERSION >= 6.3002
+    ((defined($ExtUtils::MakeMaker::VERSION) &&
+     ($ExtUtils::MakeMaker::VERSION >= 6.3002))
       ? ('LICENSE'=> 'GPL')
       : ()),
     PL_FILES            => {},
@@ -24,6 +25,16 @@ WriteMakefile(
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'HTML-SocialMedia-*' },
+    META_MERGE		=> {
+    	'meta-spec' => { version => 2 },
+    	resources => {
+    		repository => {
+			type => 'git',
+			url => 'git://github.com/nigelhorne/HTML-SocialMedia.git',
+			web => 'https://github.com/nigelhorne/HTML-SocialMedia',
+    		},
+	},
+    },
     META_MERGE		=> {
     	'meta-spec' => { version => 2 },
     	resources => {

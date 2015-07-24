@@ -10,12 +10,12 @@ HTML::SocialMedia - Put social media links into your website
 
 =head1 VERSION
 
-Version 0.22
+Version 0.23
 
 =cut
 
-our $VERSION = '0.22';
-use constant DEFAULTFACEBOOKURL => 'http://connect.facebook.net/en_GB/all.js#xfbml=1';
+our $VERSION = '0.23';
+use constant DEFAULTFACEBOOKURL => "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.4";
 
 =head1 SYNOPSIS
 
@@ -57,6 +57,7 @@ twitter: twitter account name
 twitter_related: array of 2 elements - the name and description of a related account
 cache: This object will be an instantiation of a class that understands get and
 set, such as L<CHI>.
+info: Object which understands host_name messages, such as L<CGI::Info>.
 
 =cut
 
@@ -106,6 +107,7 @@ sub new {
 		_twitter_related => $params{twitter_related},
 		_cache => $params{cache},
 		_logger => $params{logger},
+		_info => $params{info},
 		_alpha2 => undef,
 	}, $class;
 }
@@ -242,7 +244,7 @@ END
 		# I suppose we could enuerate through other requested languages,
 		# but that is probably not worth the effort.
 
-		my $url = "http://connect.facebook.net/$self->{_alpha2}/all.js#xfbml=1";
+		my $url = "https://connect.facebook.net/$self->{_alpha2}/sdk.js#xfbml=1&version=v2.4";
 		if($self->{_logger}) {
 			$self->{_logger}->debug("URL $url");
 		}
@@ -299,14 +301,28 @@ END
 				var s = document.createElement('SCRIPT'), s1 = document.getElementsByTagName('HEAD')[0];
 				s.type = 'text/javascript';
 				s.async = true;
+			<div id="fb-root"></div>
+			<script>(function(d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) return;
+				js = d.createElement(s); js.id = id;
 END
-		$rc .= "s.src = \"$url\";";
-
+		$rc .= "js.src = http:\"$url\";";
 		$rc .= << 'END';
-			s1.parentNode.insertBefore(s, s1);
-		    </script>
-		</div>
+				fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'facebook-jssdk'));
+			</script>
 END
+		my $host_name;
+		unless($self->{info}) {
+			require CGI::Info;
+
+			$self->{info} = CGI::Info->new();
+		}
+		$host_name = $self->{info}->host_name();
+
+		$rc .= "<div class=\"fb-like\" data-href=\"http://$host_name\" data-layout=\"standard\" data-action=\"like\" data-show-faces=\"true\" data-share=\"false\"></div>";
+
 		if($params{google_plusone} || $params{linkedin_share_button} || $params{reddit_button}) {
 			$rc .= '<p>';
 		}

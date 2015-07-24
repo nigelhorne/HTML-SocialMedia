@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 4;
+use Test::Most tests => 4;
 
 # Test for https://rt.cpan.org/Ticket/Display.html?id=100242
 
