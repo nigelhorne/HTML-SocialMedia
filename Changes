@@ -1,5 +1,8 @@
 Revision history for HTML-SocialMedia
 
+0.24
+	Added LWP::Protocol::https as a prerequisite
+
 0.23	Thu Jul 23 20:57:49 EDT 2015
 	Fallback to the default location if there is a problem talking to
 		Facebook
