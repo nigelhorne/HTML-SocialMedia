@@ -15,7 +15,7 @@ Version 0.24
 =cut
 
 our $VERSION = '0.24';
-use constant DEFAULTFACEBOOKURL => "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.4";
+use constant DEFAULTFACEBOOKURL => "https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.4";
 
 =head1 SYNOPSIS
 
@@ -301,7 +301,7 @@ END
 					if (d.getElementById(id)) return;
 					js = d.createElement(s); js.id = id;
 END
-		$rc .= "js.src = http:\"$url\";";
+		$rc .= "js.src = \"$url\";";
 		$rc .= << 'END';
 					fjs.parentNode.insertBefore(js, fjs);
 					}(document, 'script', 'facebook-jssdk'));
