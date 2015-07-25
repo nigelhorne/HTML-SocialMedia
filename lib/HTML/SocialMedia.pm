@@ -294,24 +294,18 @@ END
 		}
 
 		$rc .= << 'END';
-			<div id="facebook">
 			<div id="fb-root"></div>
-			<script type="text/javascript">
-				document.write('<' + 'fb:like send="false" layout="button_count" width="100" show_faces="false" font=""></fb:like>');
-				var s = document.createElement('SCRIPT'), s1 = document.getElementsByTagName('HEAD')[0];
-				s.type = 'text/javascript';
-				s.async = true;
-			<div id="fb-root"></div>
-			<script>(function(d, s, id) {
-				var js, fjs = d.getElementsByTagName(s)[0];
-				if (d.getElementById(id)) return;
-				js = d.createElement(s); js.id = id;
+			<script>
+				(function(d, s, id) {
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) return;
+					js = d.createElement(s); js.id = id;
 END
 		$rc .= "js.src = http:\"$url\";";
 		$rc .= << 'END';
-				fjs.parentNode.insertBefore(js, fjs);
-				}(document, 'script', 'facebook-jssdk'));
-			</script>
+					fjs.parentNode.insertBefore(js, fjs);
+					}(document, 'script', 'facebook-jssdk'));
+				</script>
 END
 		my $host_name;
 		unless($self->{info}) {
