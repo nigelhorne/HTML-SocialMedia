@@ -70,3 +70,9 @@ sub info {
 	::diag($message);
 }
 
+sub error {
+	my $self = shift;
+	my $message = shift;
+
+	::diag($message);
+}
