@@ -7,3 +7,6 @@ perl:
   - "5.18"
   - "5.16"
   - "5.14"
+before_install:
+  # Needed for Locale::Object
+  - eval cpanm --quiet --installdeps --notest DBD::SQLite
