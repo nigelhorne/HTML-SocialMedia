@@ -9,5 +9,6 @@ perl:
   - "5.14"
 before_install:
   # Needed for Locale::Object
-  - cpanm --installdeps --notest DBD::SQLite Locale::Object::Country || cat /home/travis/.cpanm/work/*/build.log
-  - cpanm --installdeps --notest --verbose --no-interactive . || cat /home/travis/.cpanm/work/*/build.log
+  - cpanm --installdeps --notest DBD::SQLite Locale::Object::Country
+  - cpanm --notest DBD::SQLite Locale::Object::Country
+  - cpanm --installdeps --notest --verbose --no-interactive .
