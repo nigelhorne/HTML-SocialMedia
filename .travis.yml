@@ -10,4 +10,4 @@ perl:
 before_install:
   # Needed for Locale::Object
   - cpanm --installdeps --notest DBD::SQLite Locale::Object::Country || cat /home/travis/.cpanm/work/*/build.log
-  - cpanm --installdeps --notest . || cat /home/travis/.cpanm/work/*/build.log
+  - cpanm --installdeps --notest --verbose --no-interactive . || cat /home/travis/.cpanm/work/*/build.log
