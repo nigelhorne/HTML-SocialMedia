@@ -10,5 +10,5 @@ perl:
 before_install:
   # Needed for Locale::Object
   - cpanm --installdeps --notest DBD::SQLite Locale::Object::Country
-  - cpanm --notest DBD::SQLite Locale::Object::Country
+  - cpanm --notest --verbose DBD::SQLite Locale::Object::Country
   - cpanm --installdeps --notest --verbose --no-interactive .
