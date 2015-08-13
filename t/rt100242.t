@@ -62,3 +62,11 @@ sub trace {
 	# Enable this for debugging
 	# ::diag($message);
 }
+
+sub info {
+	my $self = shift;
+	my $message = shift;
+
+	::diag($message);
+}
+
