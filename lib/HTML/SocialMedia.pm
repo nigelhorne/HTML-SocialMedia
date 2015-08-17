@@ -121,7 +121,7 @@ in the language of the user.
     use HTML::SocialMedia;
     my $sm = HTML::SocialMedia->new(
 	twitter => 'mytwittername',
-	twotter_related => [ 'someonelikeme', 'another twitter feed' ]
+	twitter_related => [ 'someonelikeme', 'another twitter feed' ]
     );
 
     print "Content-type: text/html\n\n";
