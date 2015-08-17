@@ -10,11 +10,11 @@ HTML::SocialMedia - Put social media links into your website
 
 =head1 VERSION
 
-Version 0.24
+Version 0.25
 
 =cut
 
-our $VERSION = '0.24';
+our $VERSION = '0.25';
 use constant DEFAULTFACEBOOKURL => "https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.4";
 
 =head1 SYNOPSIS
