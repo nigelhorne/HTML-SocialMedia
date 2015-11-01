@@ -207,10 +207,10 @@ sub as_string {
 		if($params{twitter_follow_button}) {
 			my $language = $lingua->language();
 			if(($language eq 'English') || ($language eq 'Unknown')) {
-				$rc = '<a href="http://twitter.com/' . $self->{_twitter} . '" class="twitter-follow-button">Follow @' . $self->{_twitter} . '</a>';
+				$rc = '<a href="//twitter.com/' . $self->{_twitter} . '" class="twitter-follow-button">Follow @' . $self->{_twitter} . '</a>';
 			} else {
 				my $langcode = substr($self->{_alpha2}, 0, 2);
-				$rc = '<a href="http://twitter.com/' . $self->{_twitter} . "\" class=\"twitter-follow-button\" data-lang=\"$langcode\">Follow \@" . $self->{_twitter} . '</a>';
+				$rc = '<a href="//twitter.com/' . $self->{_twitter} . "\" class=\"twitter-follow-button\" data-lang=\"$langcode\">Follow \@" . $self->{_twitter} . '</a>';
 			}
 			if($params{twitter_tweet_button}) {
 				$rc .= '<p>';
@@ -222,17 +222,17 @@ sub as_string {
 					var t = document.createElement('SCRIPT'), t1 = document.getElementsByTagName('HEAD')[0];
 					t.type = 'text/javascript';
 					t.async = true;
-					t.src = "http://platform.twitter.com/widgets.js";
+					t.src = "//platform.twitter.com/widgets.js";
 					t1.parentNode.insertBefore(t, t1);
 				</script>
-				<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="
+				<a href="//twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="
 END
 			$rc .= $self->{_twitter} . '"';
 			if($self->{_twitter_related}) {
 				my @related = @{$self->{_twitter_related}};
 				$rc .= ' data-related="' . $related[0] . ':' . $related[1] . '"';
 			}
-			$rc .= '>Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>';
+			$rc .= '>Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>';
 		}
 	}
 	if($params{facebook_like_button}) {
@@ -323,7 +323,7 @@ END
 	}
 	if($params{linkedin_share_button}) {
 		$rc .= << 'END';
-<script src="http://platform.linkedin.com/in.js" type="text/javascript"></script>
+<script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
 <script type="IN/Share" data-counter="right"></script>
 END
 		if($params{google_plusone} || $params{reddit_button}) {
@@ -351,17 +351,10 @@ END
 			$rc .= "window.___gcfg = {lang: '$alpha2'};\n";
 		}
 
-		require CGI::Info;
-
-		my $protocol = CGI::Info->protocol();
-		if((!defined($protocol)) || ($protocol eq 'https')) {
-			$protocol = 'http';
-		}
-
 		$rc .= << "END";
 			  (function() {
 			    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-			    po.src = '$protocol://apis.google.com/js/plusone.js';
+			    po.src = '//apis.google.com/js/plusone.js';
 			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
 			  })();
 			</script>
@@ -371,7 +364,7 @@ END
 		}
 	}
 	if($params{reddit_button}) {
-		$rc .= '<script type="text/javascript" src="http://www.reddit.com/static/button/button1.js"></script>';
+		$rc .= '<script type="text/javascript" src="//www.reddit.com/static/button/button1.js"></script>';
 	}
 
 	return $rc;
