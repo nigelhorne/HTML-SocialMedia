@@ -22,6 +22,7 @@ RT100242: {
 
 	$ENV{'HTTP_ACCEPT_LANGUAGE'} = 'hr-HR';
 	$ENV{'REMOTE_ADDR'} = '195.29.95.225';
+	$ENV{'SERVER_PROTOCOL'} = 'HTTP/1.0';
 
 	my $sm = new_ok('HTML::SocialMedia' => [ logger => MyLogger->new() ]);
 	ok(defined($sm->as_string(facebook_like_button => 1)));
