@@ -2,8 +2,10 @@
 
 use strict;
 use warnings;
-use Test::Most tests => 49;
+use Test::Most tests => 51;
 use Test::NoWarnings;
+
+eval 'use autodie qw(:all)';	# Test for open/close failures
 
 BEGIN {
 	use_ok('HTML::SocialMedia');
@@ -17,7 +19,9 @@ STRING: {
 	ok(!defined($sm->as_string()));
 	ok(defined($sm->as_string(twitter_follow_button => 1)));
 	ok($sm->as_string(twitter_tweet_button => 1) !~ /data-related/);
+	ok($sm->as_string(twitter_tweet_button => 1) =~ /http:..twitter.com/);
 	ok($sm->as_string(twitter_follow_button => 1) !~ /data-lang="/);
+	ok($sm->as_string(twitter_follow_button => 1) =~ /http:..twitter.com/);
 
 	$ENV{'REQUEST_METHOD'} = 'GET';
 	$ENV{'HTTP_ACCEPT_LANGUAGE'} = 'fr-FR';

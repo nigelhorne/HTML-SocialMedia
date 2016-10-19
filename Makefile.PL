@@ -16,13 +16,13 @@ WriteMakefile(
 	'Test::Most' => 0,
 	'Test::NoWarnings' => 0,
 	# 'Test::Kwalitee' => 0,
+	'CGI::Info' => 0.10,	# Needs protocol()
     },
     PREREQ_PM => {
 	'CGI::Lingua' => 0.26,	# Need subcountry_code_alpha2()
 	'I18N::LangTags::Detect' => 0,
 	'LWP::UserAgent' => 0,
 	'LWP::Protocol::https' => 0,
-	'CGI::Info' => 0.10,	# Needs protocol()
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'HTML-SocialMedia-*' },

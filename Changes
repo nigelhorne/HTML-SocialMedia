@@ -1,5 +1,8 @@
 Revision history for HTML-SocialMedia
 
+0.26
+	Use https URLs when host is on HTTPS
+
 0.25	Sun Aug 16 20:24:43 EDT 2015
 	Fix the Facebook like code
 

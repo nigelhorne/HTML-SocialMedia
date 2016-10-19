@@ -65,6 +65,8 @@ sub new {
 	my $proto = shift;
 
 	my $class = ref($proto) || $proto;
+	return unless(defined($class));
+
 	my %params = (ref($_[0]) eq 'HASH') ? %{$_[0]} : @_;
 
 	my $lingua = $params{lingua};
@@ -203,14 +205,22 @@ sub as_string {
 
 	my $rc;
 
+	my $protocol;
+	if($self->{_info}) {
+		$protocol = $self->{_info}->protocol() || 'http';
+	} else {
+		require CGI::Info;
+		$protocol = CGI::Info->protocol() || 'http';
+	}
+
 	if($self->{_twitter}) {
 		if($params{twitter_follow_button}) {
 			my $language = $lingua->language();
 			if(($language eq 'English') || ($language eq 'Unknown')) {
-				$rc = '<a href="http://twitter.com/' . $self->{_twitter} . '" class="twitter-follow-button">Follow @' . $self->{_twitter} . '</a>';
+				$rc = '<a href="' . $protocol . '://twitter.com/' . $self->{_twitter} . '" class="twitter-follow-button">Follow @' . $self->{_twitter} . '</a>';
 			} else {
 				my $langcode = substr($self->{_alpha2}, 0, 2);
-				$rc = '<a href="http://twitter.com/' . $self->{_twitter} . "\" class=\"twitter-follow-button\" data-lang=\"$langcode\">Follow \@" . $self->{_twitter} . '</a>';
+				$rc = '<a href="' . $protocol . '://twitter.com/' . $self->{_twitter} . "\" class=\"twitter-follow-button\" data-lang=\"$langcode\">Follow \@" . $self->{_twitter} . '</a>';
 			}
 			if($params{twitter_tweet_button}) {
 				$rc .= '<p>';
@@ -232,7 +242,7 @@ END
 				my @related = @{$self->{_twitter_related}};
 				$rc .= ' data-related="' . $related[0] . ':' . $related[1] . '"';
 			}
-			$rc .= '>Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>';
+			$rc .= '>Tweet</a><script type="text/javascript" src="' . $protocol . '://platform.twitter.com/widgets.js"></script>';
 		}
 	}
 	if($params{facebook_like_button}) {
@@ -315,7 +325,7 @@ END
 		}
 		$host_name = $self->{info}->host_name();
 
-		$rc .= "<div class=\"fb-like\" data-href=\"http://$host_name\" data-layout=\"standard\" data-action=\"like\" data-show-faces=\"true\" data-share=\"false\"></div>";
+		$rc .= "<div class=\"fb-like\" data-href=\"' . $protocol . '://$host_name\" data-layout=\"standard\" data-action=\"like\" data-show-faces=\"true\" data-share=\"false\"></div>";
 
 		if($params{google_plusone} || $params{linkedin_share_button} || $params{reddit_button}) {
 			$rc .= '<p>';
@@ -351,13 +361,6 @@ END
 			$rc .= "window.___gcfg = {lang: '$alpha2'};\n";
 		}
 
-		require CGI::Info;
-
-		my $protocol = CGI::Info->protocol();
-		if((!defined($protocol)) || ($protocol eq 'https')) {
-			$protocol = 'http';
-		}
-
 		$rc .= << "END";
 			  (function() {
 			    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
@@ -371,7 +374,7 @@ END
 		}
 	}
 	if($params{reddit_button}) {
-		$rc .= '<script type="text/javascript" src="http://www.reddit.com/static/button/button1.js"></script>';
+		$rc .= '<script type="text/javascript" src="' . $protocol . '://www.reddit.com/static/button/button1.js"></script>';
 	}
 
 	return $rc;
@@ -441,7 +444,7 @@ L<http://search.cpan.org/dist/HTML-SocialMedia/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2011-2015 Nigel Horne.
+Copyright 2011-2016 Nigel Horne.
 
 This program is released under the following licence: GPL
 
