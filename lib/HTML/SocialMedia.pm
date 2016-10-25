@@ -133,7 +133,7 @@ in the language of the user.
 
     print $sm->as_string(
 	twitter_follow_button => 1,
-	twitter_tweet_button => 1,
+	twitter_tweet_button => 1,	# button to tweet this page
 	facebook_like_button => 1,
 	linkedin_share_button => 1,
 	google_plusone => 1,
