@@ -138,6 +138,7 @@ in the language of the user.
 	linkedin_share_button => 1,
 	google_plusone => 1,
 	reddit_button => 1,
+	align => 'right',
     );
 
     print '</BODY></HTML>';
@@ -151,16 +152,22 @@ twitter_tweet_button: add a button to tweet this page
 
 facebook_like_button: add a Facebook like button
 
+facebook_share_button: add a Facebook share button
+
 linkedin_share_button: add a LinkedIn share button
 
 google_plusone: add a Google +1 button
 
 reddit_button: add a Reddit button
 
+align: argument to <p> HTML tag
+
 =cut
 
 sub as_string {
-	my ($self, %params) = @_;
+	my $self = shift;
+
+	my %params = (ref($_[0]) eq 'HASH') ? %{$_[0]} : @_;
 
 	my $lingua = $self->{_lingua};
 
@@ -223,7 +230,11 @@ sub as_string {
 				$rc = '<a href="' . $protocol . '://twitter.com/' . $self->{_twitter} . "\" class=\"twitter-follow-button\" data-lang=\"$langcode\">Follow \@" . $self->{_twitter} . '</a>';
 			}
 			if($params{twitter_tweet_button}) {
-				$rc .= '<p>';
+				if($params{'align'}) {
+					$rc .= "<p align=\"$params{'align'}\">";
+				} else {
+					$rc .= '<p>';
+				}
 			}
 		}
 		if($params{twitter_tweet_button}) {
@@ -258,7 +269,11 @@ END
 	}
 	if($params{facebook_like_button}) {
 		if($params{twitter_tweet_button} || $params{twitter_follow_button}) {
-			$rc .= '<p>';
+			if($params{'align'}) {
+				$rc .= "<p align=\"$params{'align'}\">";
+			} else {
+				$rc .= '<p>';
+			}
 		}
 
 		# See if Facebook supports our wanted language. If not then
@@ -339,16 +354,25 @@ END
 		$rc .= "<div class=\"fb-like\" data-href=\"$protocol://$host_name\" data-layout=\"standard\" data-action=\"like\" data-show-faces=\"true\" data-share=\"false\"></div>";
 
 		if($params{google_plusone} || $params{linkedin_share_button} || $params{reddit_button}) {
-			$rc .= '<p>';
+			if($params{'align'}) {
+				$rc .= "<p align=\"$params{'align'}\">";
+			} else {
+				$rc .= '<p>';
+			}
 		}
 	}
+
 	if($params{linkedin_share_button}) {
 		$rc .= << 'END';
 <script src="http://platform.linkedin.com/in.js" type="text/javascript"></script>
 <script type="IN/Share" data-counter="right"></script>
 END
 		if($params{google_plusone} || $params{reddit_button}) {
-			$rc .= '<p>';
+			if($params{'align'}) {
+				$rc .= "<p align=\"$params{'align'}\">";
+			} else {
+				$rc .= '<p>';
+			}
 		}
 	}
 	if($params{google_plusone}) {
@@ -381,7 +405,11 @@ END
 			</script>
 END
 		if($params{reddit_button}) {
-			$rc .= '<p>';
+			if($params{'align'}) {
+				$rc .= "<p align=\"$params{'align'}\">";
+			} else {
+				$rc .= '<p>';
+			}
 		}
 	}
 	if($params{reddit_button}) {

@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Most tests => 51;
+use Test::Most tests => 57;
 use Test::NoWarnings;
 
 eval 'use autodie qw(:all)';	# Test for open/close failures
@@ -88,5 +88,11 @@ STRING: {
 	isa_ok($sm, 'HTML::SocialMedia');
 	ok(defined($sm->as_string(reddit_button => 1)));
 	ok($sm->as_string(reddit_button => 1) =~ /reddit\.com/);
+	ok($sm->as_string({ reddit_button => 1, facebook_like_button => 1 }) =~ /reddit\.com/);
+	ok($sm->as_string({ reddit_button => 1, facebook_like_button => 1 }) =~ /<p>/);
+	ok($sm->as_string({ reddit_button => 1, facebook_like_button => 1 }) !~ /<p align="right">/);
+	ok($sm->as_string({ reddit_button => 1, facebook_like_button => 1, align => 'right' }) =~ /reddit\.com/);
+	ok($sm->as_string({ reddit_button => 1, facebook_like_button => 1, align => 'right' }) !~ /<p>/);
+	ok($sm->as_string({ reddit_button => 1, facebook_like_button => 1, align => 'right' }) =~ /<p align="right">/);
 	ok($sm->as_string(reddit_button => 1) !~ /linkedin/);
 }
