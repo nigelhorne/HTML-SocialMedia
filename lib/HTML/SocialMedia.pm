@@ -347,8 +347,9 @@ END
 				fjs.parentNode.insertBefore(js, fjs);
 			}(document, 'script', 'facebook-jssdk'));
 		</script>
-		<div class="fb-like" data-share="true" data-width="450" data-show-faces="true"></div>
+		<div class="fb-like" data-width="450" data-show-faces="true"></div>
 END
+		# <div class="fb-like" data-share="true" data-width="450" data-show-faces="true"></div>
 
 		if($params{google_plusone} || $params{linkedin_share_button} || $params{reddit_button}) {
 			if($params{'align'}) {
