@@ -336,7 +336,7 @@ END
 		}
 		$host_name = $self->{info}->host_name();
 
-		$rc .= "<div class=\"fb-like\" data-href=\"' . $protocol . '://$host_name\" data-layout=\"standard\" data-action=\"like\" data-show-faces=\"true\" data-share=\"false\"></div>";
+		$rc .= "<div class=\"fb-like\" data-href=\"$protocol://$host_name\" data-layout=\"standard\" data-action=\"like\" data-show-faces=\"true\" data-share=\"false\"></div>";
 
 		if($params{google_plusone} || $params{linkedin_share_button} || $params{reddit_button}) {
 			$rc .= '<p>';
