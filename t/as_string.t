@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Most tests => 57;
+use Test::Most tests => 59;
 use Test::NoWarnings;
 
 eval 'use autodie qw(:all)';	# Test for open/close failures
@@ -22,6 +22,7 @@ STRING: {
 	ok($sm->as_string(twitter_tweet_button => 1) =~ /https:..twitter.com/);
 	ok($sm->as_string(twitter_follow_button => 1) !~ /data-lang="/);
 	ok($sm->as_string(twitter_follow_button => 1) =~ /http:..twitter.com/);
+	ok($sm->as_string(twitter_follow_button => 1) !~ /facebook/);
 
 	$ENV{'REQUEST_METHOD'} = 'GET';
 	$ENV{'HTTP_ACCEPT_LANGUAGE'} = 'fr-FR';
@@ -31,6 +32,7 @@ STRING: {
 	ok($sm->as_string(facebook_like_button => 1) =~ /fr_FR/);
 	# No twitter account given, so we can't get a tweet button
 	ok(!defined($sm->as_string(twitter_tweet_button => 1)));
+	ok($sm->as_string(facebook_like_button => 1) !~ /http:..twitter.com/);
 
 	# Asking for French with a US browser should display in French
 	$ENV{'HTTP_USER_AGENT'} = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.19) Gecko/20110707 Firefox/3.6.19';

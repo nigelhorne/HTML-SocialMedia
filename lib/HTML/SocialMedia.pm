@@ -15,7 +15,6 @@ Version 0.25
 =cut
 
 our $VERSION = '0.25';
-use constant DEFAULTFACEBOOKURL => "https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.4";
 
 =head1 SYNOPSIS
 
@@ -219,62 +218,8 @@ sub as_string {
 		require CGI::Info;
 		$protocol = CGI::Info->protocol() || 'http';
 	}
-
-	if($self->{_twitter}) {
-		if($params{twitter_follow_button}) {
-			my $language = $lingua->language();
-			if(($language eq 'English') || ($language eq 'Unknown')) {
-				$rc = '<a href="' . $protocol . '://twitter.com/' . $self->{_twitter} . '" class="twitter-follow-button">Follow @' . $self->{_twitter} . '</a>';
-			} else {
-				my $langcode = substr($self->{_alpha2}, 0, 2);
-				$rc = '<a href="' . $protocol . '://twitter.com/' . $self->{_twitter} . "\" class=\"twitter-follow-button\" data-lang=\"$langcode\">Follow \@" . $self->{_twitter} . '</a>';
-			}
-			if($params{twitter_tweet_button}) {
-				if($params{'align'}) {
-					$rc .= "<p align=\"$params{'align'}\">";
-				} else {
-					$rc .= '<p>';
-				}
-			}
-		}
-		if($params{twitter_tweet_button}) {
-			$rc .= << 'END';
-				<script type="text/javascript">
-					window.twttr = (function(d, s, id) {
-						var js, fjs = d.getElementsByTagName(s)[0],
-						t = window.twttr || {};
-						if (d.getElementById(id)) return t;
-						js = d.createElement(s);
-						js.id = id;
-						js.src = "https://platform.twitter.com/widgets.js";
-						fjs.parentNode.insertBefore(js, fjs);
-
-						t._e = [];
-						t.ready = function(f) {
-							t._e.push(f);
-						};
-
-						return t;
-					}(document, "script", "twitter-wjs"));
-				</script>
-				<a href="https://twitter.com/intent/tweet" class="twitter-share-button" data-count="horizontal" data-via="
-END
-			$rc .= $self->{_twitter} . '"';
-			if($self->{_twitter_related}) {
-				my @related = @{$self->{_twitter_related}};
-				$rc .= ' data-related="' . $related[0] . ':' . $related[1] . '"';
-			}
-			$rc .= '>Tweet</a><script type="text/javascript" src="' . $protocol . '://platform.twitter.com/widgets.js"></script>';
-		}
-	}
 	if($params{facebook_like_button}) {
-		if($params{twitter_tweet_button} || $params{twitter_follow_button}) {
-			if($params{'align'}) {
-				$rc .= "<p align=\"$params{'align'}\">";
-			} else {
-				$rc .= '<p>';
-			}
-		}
+		# Grab the Facebook preamble and put it as early as we can
 
 		# See if Facebook supports our wanted language. If not then
 		# I suppose we could enuerate through other requested languages,
@@ -329,7 +274,7 @@ END
 			}
 		}
 
-		$rc .= << "END";
+		$rc = << "END";
 		<script>
 			window.fbAsyncInit = function() {
 				FB.init({
@@ -347,8 +292,66 @@ END
 				fjs.parentNode.insertBefore(js, fjs);
 			}(document, 'script', 'facebook-jssdk'));
 		</script>
-		<div class="fb-like" data-width="450" data-show-faces="true"></div>
 END
+	}
+
+	if($self->{_twitter}) {
+		if($params{twitter_follow_button}) {
+			my $language = $lingua->language();
+			if(($language eq 'English') || ($language eq 'Unknown')) {
+				$rc .= '<a href="' . $protocol . '://twitter.com/' . $self->{_twitter} . '" class="twitter-follow-button">Follow @' . $self->{_twitter} . '</a>';
+			} else {
+				my $langcode = substr($self->{_alpha2}, 0, 2);
+				$rc .= '<a href="' . $protocol . '://twitter.com/' . $self->{_twitter} . "\" class=\"twitter-follow-button\" data-lang=\"$langcode\">Follow \@" . $self->{_twitter} . '</a>';
+			}
+			if($params{twitter_tweet_button}) {
+				if($params{'align'}) {
+					$rc .= "<p align=\"$params{'align'}\">";
+				} else {
+					$rc .= '<p>';
+				}
+			}
+		}
+		if($params{twitter_tweet_button}) {
+			$rc .= << 'END';
+				<script type="text/javascript">
+					window.twttr = (function(d, s, id) {
+						var js, fjs = d.getElementsByTagName(s)[0],
+						t = window.twttr || {};
+						if (d.getElementById(id)) return t;
+						js = d.createElement(s);
+						js.id = id;
+						js.src = "https://platform.twitter.com/widgets.js";
+						fjs.parentNode.insertBefore(js, fjs);
+
+						t._e = [];
+						t.ready = function(f) {
+							t._e.push(f);
+						};
+
+						return t;
+					}(document, "script", "twitter-wjs"));
+				</script>
+				<a href="https://twitter.com/intent/tweet" class="twitter-share-button" data-count="horizontal" data-via="
+END
+			$rc .= $self->{_twitter} . '"';
+			if($self->{_twitter_related}) {
+				my @related = @{$self->{_twitter_related}};
+				$rc .= ' data-related="' . $related[0] . ':' . $related[1] . '"';
+			}
+			$rc .= '>Tweet</a><script type="text/javascript" src="' . $protocol . '://platform.twitter.com/widgets.js"></script>';
+		}
+	}
+	if($params{facebook_like_button}) {
+		if($params{twitter_tweet_button} || $params{twitter_follow_button}) {
+			if($params{'align'}) {
+				$rc .= "<p align=\"$params{'align'}\">";
+			} else {
+				$rc .= '<p>';
+			}
+		}
+
+		$rc .= '<div class="fb-like" data-width="450" data-show-faces="true"></div>';
 		# <div class="fb-like" data-share="true" data-width="450" data-show-faces="true"></div>
 
 		if($params{google_plusone} || $params{linkedin_share_button} || $params{reddit_button}) {
