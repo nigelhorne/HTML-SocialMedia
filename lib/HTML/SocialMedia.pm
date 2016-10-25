@@ -280,24 +280,24 @@ END
 		# I suppose we could enuerate through other requested languages,
 		# but that is probably not worth the effort.
 
-		my $url = "https://connect.facebook.net/$self->{_alpha2}/sdk.js#xfbml=1&version=v2.4";
-		if($self->{_logger}) {
-			$self->{_logger}->debug("URL $url");
-		}
+		my $country = 'en_US';
 		my $res;
 		if($self->{_cache}) {
-			$res = $self->{_cache}->get($url);
+			$res = $self->{_cache}->get($country);
 		}
 
 		if(defined($res)) {
 			unless($res) {
-				$url = DEFAULTFACEBOOKURL;
+				$country = 'en_US';
 			}
 		} else {
 			# Resposnse is of type HTTP::Response
 			require LWP::UserAgent;
 
 			my $response;
+
+			$country = $self->{_alpha2};
+			my $url = "http://connect.facebook.net/$country/sdk.js";
 
 			eval {
 				$response = LWP::UserAgent->new(timeout => 10)->request(HTTP::Request->new(GET => $url));
@@ -314,44 +314,41 @@ END
 				# will get changed at sometime in the future. Sigh.
 				if($response->decoded_content() =~ /is not a valid locale/) {
 					# TODO: Guess more appropriate fallbacks
-					$url = DEFAULTFACEBOOKURL;
+					$country = 'en_US';
 					if($self->{_cache}) {
-						$self->{_cache}->set($url, 0, '10 minutes');
+						$self->{_cache}->set($country, 0, '10 minutes');
 					}
 				} elsif($self->{_cache}) {
-					$self->{_cache}->set($url, 1, '10 minutes');
+					$self->{_cache}->set($country, 1, '10 minutes');
 				}
 			} else {
-				$url = DEFAULTFACEBOOKURL;
+				$country = 'en_US';
 				if($self->{_cache}) {
-					$self->{_cache}->set($url, 0, '10 minutes');
+					$self->{_cache}->set($country, 0, '10 minutes');
 				}
 			}
 		}
 
-		$rc .= << 'END';
-			<div id="fb-root"></div>
-			<script>
-				(function(d, s, id) {
-					var js, fjs = d.getElementsByTagName(s)[0];
-					if (d.getElementById(id)) return;
-					js = d.createElement(s); js.id = id;
-END
-		$rc .= "js.src = \"$url\";";
-		$rc .= << 'END';
-					fjs.parentNode.insertBefore(js, fjs);
-					}(document, 'script', 'facebook-jssdk'));
-				</script>
-END
-		my $host_name;
-		unless($self->{info}) {
-			require CGI::Info;
+		$rc .= << "END";
+		<script>
+			window.fbAsyncInit = function() {
+				FB.init({
+					appId      : '953901534714390',
+					xfbml      : true,
+					version    : 'v2.8'
+				});
+			};
 
-			$self->{info} = CGI::Info->new();
-		}
-		$host_name = $self->{info}->host_name();
-
-		$rc .= "<div class=\"fb-like\" data-href=\"$protocol://$host_name\" data-layout=\"standard\" data-action=\"like\" data-show-faces=\"true\" data-share=\"false\"></div>";
+			(function(d, s, id){
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) {return;}
+				js = d.createElement(s); js.id = id;
+				js.src = "//connect.facebook.net/$country/sdk.js";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+		</script>
+		<div class="fb-like" data-share="true" data-width="450" data-show-faces="true"></div>
+END
 
 		if($params{google_plusone} || $params{linkedin_share_button} || $params{reddit_button}) {
 			if($params{'align'}) {

@@ -4,6 +4,7 @@ Revision history for HTML-SocialMedia
 	Use https URLs when host is on HTTPS
 	Used latest 'tweet this' code from Twitter
 	Added align argument to as_string()
+	Upgrade to Facebook API v2.8
 
 0.25	Sun Aug 16 20:24:43 EDT 2015
 	Fix the Facebook like code
