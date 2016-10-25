@@ -229,13 +229,24 @@ sub as_string {
 		if($params{twitter_tweet_button}) {
 			$rc .= << 'END';
 				<script type="text/javascript">
-					var t = document.createElement('SCRIPT'), t1 = document.getElementsByTagName('HEAD')[0];
-					t.type = 'text/javascript';
-					t.async = true;
-					t.src = "http://platform.twitter.com/widgets.js";
-					t1.parentNode.insertBefore(t, t1);
+					window.twttr = (function(d, s, id) {
+						var js, fjs = d.getElementsByTagName(s)[0],
+						t = window.twttr || {};
+						if (d.getElementById(id)) return t;
+						js = d.createElement(s);
+						js.id = id;
+						js.src = "https://platform.twitter.com/widgets.js";
+						fjs.parentNode.insertBefore(js, fjs);
+
+						t._e = [];
+						t.ready = function(f) {
+							t._e.push(f);
+						};
+
+						return t;
+					}(document, "script", "twitter-wjs"));
 				</script>
-				<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="
+				<a href="https://twitter.com/intent/tweet" class="twitter-share-button" data-count="horizontal" data-via="
 END
 			$rc .= $self->{_twitter} . '"';
 			if($self->{_twitter_related}) {

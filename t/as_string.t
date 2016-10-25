@@ -19,7 +19,7 @@ STRING: {
 	ok(!defined($sm->as_string()));
 	ok(defined($sm->as_string(twitter_follow_button => 1)));
 	ok($sm->as_string(twitter_tweet_button => 1) !~ /data-related/);
-	ok($sm->as_string(twitter_tweet_button => 1) =~ /http:..twitter.com/);
+	ok($sm->as_string(twitter_tweet_button => 1) =~ /https:..twitter.com/);
 	ok($sm->as_string(twitter_follow_button => 1) !~ /data-lang="/);
 	ok($sm->as_string(twitter_follow_button => 1) =~ /http:..twitter.com/);
 

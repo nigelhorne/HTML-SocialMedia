@@ -1,4 +1,4 @@
-#!perl -w
+#!perl
 
 use strict;
 use warnings;
@@ -13,5 +13,19 @@ eval 'use Test::Spelling';
 if($@) {
 	plan skip_all => 'Test::Spelling required for testing POD spelling';
 } else {
+	add_stopwords(<DATA>);
 	all_pod_files_spelling_ok();
 }
+
+__END__
+AnnoCPAN
+CGI
+CPAN
+GPL
+Init
+POSTing
+RT
+cgi
+http
+https
+www
