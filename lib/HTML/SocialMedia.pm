@@ -445,6 +445,8 @@ Please report any bugs or feature requests to C<bug-html-socialmedia at rt.cpan.
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=HTML-SocialMedia>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
+Would be good to have
+    my ($head, $body) = $sm->onload_render();
 
 =head1 SEE ALSO
 
@@ -454,7 +456,6 @@ automatically be notified of progress on your bug as I make changes.
 You can find documentation for this module with the perldoc command.
 
     perldoc HTML::SocialMedia
-
 
 You can also look for information at:
 
