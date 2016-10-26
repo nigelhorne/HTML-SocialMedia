@@ -77,7 +77,7 @@ STRING: {
 	ok($sm->as_string(twitter_tweet_button => 1) !~ /linkedin/);
 	ok($sm->as_string(twitter_follow_button => 1) eq $sm->render(twitter_follow_button => 1));
 
-	$sm = new_ok('HTML::SocialMedia' => []);
+	$sm = $sm->new();
 	ok(defined($sm->as_string(facebook_like_button => 1)));
 	ok(defined($sm->as_string(facebook_share_button => 1)));
 	ok($sm->as_string({ facebook_share_button => 1, facebook_like_button => 1 }) =~ /en_GB/);
@@ -92,10 +92,27 @@ STRING: {
 	$sm = new_ok('HTML::SocialMedia' => []);
 	ok($sm->as_string(google_plusone => 1) =~ /fr-FR/);
 
-	$sm = $sm->new();
-	isa_ok($sm, 'HTML::SocialMedia');
+	my $cache;
+
+	eval {
+		require CHI;
+
+		CHI->import;
+	};
+
+	if($@) {
+		diag("CHI not installed");
+		$cache = undef;
+	} else {
+		diag("Using CHI $CHI::VERSION");
+		my $hash = {};
+		$cache = CHI->new(driver => 'Memory', datastore => $hash);
+	}
+
+	$sm = new_ok('HTML::SocialMedia' => [ cache => $cache ]);
 	ok(defined($sm->as_string(reddit_button => 1)));
 	ok($sm->as_string(reddit_button => 1) =~ /reddit\.com/);
+	ok($sm->as_string(reddit_button => 1) !~ /facebook/);
 	ok($sm->as_string({ reddit_button => 1, facebook_like_button => 1 }) =~ /reddit\.com/);
 	ok($sm->as_string({ reddit_button => 1, facebook_like_button => 1 }) =~ /<p>/);
 	ok($sm->as_string({ reddit_button => 1, facebook_like_button => 1 }) !~ /<p align="right">/);

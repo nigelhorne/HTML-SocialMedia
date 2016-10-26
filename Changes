@@ -7,6 +7,8 @@ Revision history for HTML-SocialMedia
 	Upgrade to Facebook API v2.8
 	Added facebook_share_button
 	Remove newline before twitter handle
+	Remember the facebook language on later calls to as_string()
+	Test the cache handler
 
 0.25	Sun Aug 16 20:24:43 EDT 2015
 	Fix the Facebook like code

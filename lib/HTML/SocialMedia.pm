@@ -109,7 +109,7 @@ sub new {
 		_cache => $params{cache},
 		_logger => $params{logger},
 		_info => $params{info},
-		_alpha2 => undef,
+		# _alpha2 => undef,
 	}, $class;
 }
 
@@ -212,67 +212,63 @@ sub as_string {
 
 	my $rc;
 
-	my $protocol;
-	if($self->{_info}) {
-		$protocol = $self->{_info}->protocol() || 'http';
-	} else {
-		require CGI::Info;
-		$protocol = CGI::Info->protocol() || 'http';
-	}
 	if($params{facebook_like_button} || $params{facebook_share_button}) {
-		# Grab the Facebook preamble and put it as early as we can
+		if(!defined($self->{_country})) {
+			# Grab the Facebook preamble and put it as early as we can
 
-		# See if Facebook supports our wanted language. If not then
-		# I suppose we could enuerate through other requested languages,
-		# but that is probably not worth the effort.
+			# See if Facebook supports our wanted language. If not then
+			# I suppose we could enuerate through other requested languages,
+			# but that is probably not worth the effort.
 
-		my $country = 'en_US';
-		my $res;
-		if($self->{_cache}) {
-			$res = $self->{_cache}->get($country);
-		}
-
-		if(defined($res)) {
-			unless($res) {
-				$country = 'en_US';
+			my $country = 'en_US';
+			my $res;
+			if($self->{_cache}) {
+				$res = $self->{_cache}->get($country);
 			}
-		} else {
-			# Resposnse is of type HTTP::Response
-			require LWP::UserAgent;
 
-			my $response;
-
-			$country = $self->{_alpha2};
-			my $url = "http://connect.facebook.net/$country/sdk.js";
-
-			eval {
-				$response = LWP::UserAgent->new(timeout => 10)->request(HTTP::Request->new(GET => $url));
-			};
-			if($@) {
-				if($self->{_logger}) {
-					$self->{_logger}->info($@);
+			if(defined($res)) {
+				unless($res) {
+					$country = 'en_US';
 				}
-				$response = undef;
-			}
-			if(defined($response) && $response->is_success()) {
-				# If it's not supported, Facebook doesn't return an HTTP
-				# error such as 404, it returns a string, which no doubt
-				# will get changed at sometime in the future. Sigh.
-				if($response->decoded_content() =~ /is not a valid locale/) {
-					# TODO: Guess more appropriate fallbacks
+			} else {
+				# Resposnse is of type HTTP::Response
+				require LWP::UserAgent;
+
+				my $response;
+
+				$country = $self->{_alpha2};
+				eval {
+					$response = LWP::UserAgent->new(timeout => 10)->request(
+						HTTP::Request->new(GET => "http://connect.facebook.net/$country/sdk.js")
+					);
+				};
+				if($@) {
+					if($self->{_logger}) {
+						$self->{_logger}->info($@);
+					}
+					$response = undef;
+				}
+				if(defined($response) && $response->is_success()) {
+					# If it's not supported, Facebook doesn't return an HTTP
+					# error such as 404, it returns a string, which no doubt
+					# will get changed at sometime in the future. Sigh.
+					if($response->decoded_content() =~ /is not a valid locale/) {
+						# TODO: Guess more appropriate fallbacks
+						$country = 'en_US';
+						if($self->{_cache}) {
+							$self->{_cache}->set($country, 0, '10 minutes');
+						}
+					} elsif($self->{_cache}) {
+						$self->{_cache}->set($country, 1, '10 minutes');
+					}
+				} else {
 					$country = 'en_US';
 					if($self->{_cache}) {
 						$self->{_cache}->set($country, 0, '10 minutes');
 					}
-				} elsif($self->{_cache}) {
-					$self->{_cache}->set($country, 1, '10 minutes');
-				}
-			} else {
-				$country = 'en_US';
-				if($self->{_cache}) {
-					$self->{_cache}->set($country, 0, '10 minutes');
 				}
 			}
+			$self->{_country} = $country;
 		}
 
 		$rc = << "END";
@@ -281,7 +277,7 @@ sub as_string {
 					var js, fjs = d.getElementsByTagName(s)[0];
 					if (d.getElementById(id)) return;
 					js = d.createElement(s); js.id = id;
-					js.src = "//connect.facebook.net/$country/sdk.js#xfbml=1&version=v2.8&appId=953901534714390";
+					js.src = "//connect.facebook.net/$self->{_country}/sdk.js#xfbml=1&version=v2.8&appId=953901534714390";
 					fjs.parentNode.insertBefore(js, fjs);
 				}(document, 'script', 'facebook-jssdk'));
 			</script>
@@ -293,6 +289,14 @@ END
 		$paragraph = "<p align=\"$params{'align'}\">";
 	} else {
 		$paragraph = '<p>';
+	}
+
+	my $protocol;
+	if($self->{_info}) {
+		$protocol = $self->{_info}->protocol() || 'http';
+	} else {
+		require CGI::Info;
+		$protocol = CGI::Info->protocol() || 'http';
 	}
 
 	if($self->{_twitter}) {
