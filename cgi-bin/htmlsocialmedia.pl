@@ -10,7 +10,6 @@ CGI::Buffer::set_options(optimise_content => 1);
 print "Content-type: text/html\n\n";
 
 my $sm = HTML::SocialMedia->new(twitter => 'nigelhorne');
-);
 
 print '<!DOCTYPE HTML>',
 	'<HTML><HEAD><TITLE>SocialMedia Test</TITLE>',
