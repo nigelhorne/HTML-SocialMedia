@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Most tests => 59;
+use Test::Most tests => 65;
 use Test::NoWarnings;
 
 eval 'use autodie qw(:all)';	# Test for open/close failures
@@ -79,6 +79,12 @@ STRING: {
 
 	$sm = new_ok('HTML::SocialMedia' => []);
 	ok(defined($sm->as_string(facebook_like_button => 1)));
+	ok(defined($sm->as_string(facebook_share_button => 1)));
+	ok($sm->as_string({ facebook_share_button => 1, facebook_like_button => 1 }) =~ /en_GB/);
+	ok($sm->as_string({ facebook_share_button => 1, facebook_like_button => 1 }) =~ /"like"/);
+	ok($sm->as_string({ facebook_share_button => 1, facebook_like_button => 1 }) =~ /Share/);
+	ok($sm->as_string({ facebook_share_button => 1 }) !~ /"like"/);
+	ok($sm->as_string({ facebook_like_button => 1 }) !~ /Share/);
 	ok($sm->as_string(google_plusone => 1) =~ /en-GB/);
 
 	$ENV{'HTTP_ACCEPT_LANGUAGE'} = 'fr-FR';

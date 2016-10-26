@@ -134,6 +134,7 @@ in the language of the user.
 	twitter_follow_button => 1,
 	twitter_tweet_button => 1,	# button to tweet this page
 	facebook_like_button => 1,
+	facebook_share_button => 1,
 	linkedin_share_button => 1,
 	google_plusone => 1,
 	reddit_button => 1,
@@ -218,7 +219,7 @@ sub as_string {
 		require CGI::Info;
 		$protocol = CGI::Info->protocol() || 'http';
 	}
-	if($params{facebook_like_button}) {
+	if($params{facebook_like_button} || $params{facebook_share_button}) {
 		# Grab the Facebook preamble and put it as early as we can
 
 		# See if Facebook supports our wanted language. If not then
@@ -275,24 +276,23 @@ sub as_string {
 		}
 
 		$rc = << "END";
-		<script>
-			window.fbAsyncInit = function() {
-				FB.init({
-					appId      : '953901534714390',
-					xfbml      : true,
-					version    : 'v2.8'
-				});
-			};
-
-			(function(d, s, id){
-				var js, fjs = d.getElementsByTagName(s)[0];
-				if (d.getElementById(id)) {return;}
-				js = d.createElement(s); js.id = id;
-				js.src = "//connect.facebook.net/$country/sdk.js";
-				fjs.parentNode.insertBefore(js, fjs);
-			}(document, 'script', 'facebook-jssdk'));
-		</script>
+			<div id="fb-root"></div>
+			<script>(function(d, s, id) {
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) return;
+					js = d.createElement(s); js.id = id;
+					js.src = "//connect.facebook.net/$country/sdk.js#xfbml=1&version=v2.8&appId=953901534714390";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'facebook-jssdk'));
+			</script>
 END
+	}
+
+	my $paragraph;
+	if($params{'align'}) {
+		$paragraph = "<p align=\"$params{'align'}\">";
+	} else {
+		$paragraph = '<p>';
 	}
 
 	if($self->{_twitter}) {
@@ -305,11 +305,7 @@ END
 				$rc .= '<a href="' . $protocol . '://twitter.com/' . $self->{_twitter} . "\" class=\"twitter-follow-button\" data-lang=\"$langcode\">Follow \@" . $self->{_twitter} . '</a>';
 			}
 			if($params{twitter_tweet_button}) {
-				if($params{'align'}) {
-					$rc .= "<p align=\"$params{'align'}\">";
-				} else {
-					$rc .= '<p>';
-				}
+				$rc .= $paragraph;
 			}
 		}
 		if($params{twitter_tweet_button}) {
@@ -342,24 +338,43 @@ END
 			$rc .= '>Tweet</a><script type="text/javascript" src="' . $protocol . '://platform.twitter.com/widgets.js"></script>';
 		}
 	}
+
 	if($params{facebook_like_button}) {
 		if($params{twitter_tweet_button} || $params{twitter_follow_button}) {
-			if($params{'align'}) {
-				$rc .= "<p align=\"$params{'align'}\">";
-			} else {
-				$rc .= '<p>';
-			}
+			$rc .= $paragraph;
 		}
 
-		$rc .= '<div class="fb-like" data-width="450" data-show-faces="true"></div>';
-		# <div class="fb-like" data-share="true" data-width="450" data-show-faces="true"></div>
+		my $host_name;
+		unless($self->{info}) {
+			require CGI::Info;
+
+			$self->{info} = CGI::Info->new();
+		}
+		$host_name = $self->{info}->host_name();
+
+		$rc .= "<div class=\"fb-like\" data-href=\"$protocol://$host_name\" data-layout=\"standard\" data-action=\"like\" data-size=\"small\" data-show-faces=\"false\" data-share=\"false\"></div>";
+
+		if($params{google_plusone} || $params{linkedin_share_button} || $params{reddit_button} || $params{'facebook_share_button'}) {
+			$rc .= $paragraph;
+		}
+	}
+	if($params{'facebook_share_button'}) {
+		if($params{twitter_tweet_button} || $params{twitter_follow_button}) {
+			$rc .= $paragraph;
+		}
+
+		my $host_name;
+		unless($self->{info}) {
+			require CGI::Info;
+
+			$self->{info} = CGI::Info->new();
+		}
+		$host_name = $self->{info}->host_name();
+
+		$rc .= "<div class=\"fb-share-button\" data-href=\"$protocol://$host_name\" data-layout=\"button_count\" data-size=\"small\" data-mobile-iframe=\"false\"><a class=\"fb-xfbml-parse-ignore\" target=\"_blank\" href=\"https://www.facebook.com/sharer/sharer.php?u=$protocol%3A%2F%2F$host_name&amp;src=sdkpreparse\">Share</a></div>";
 
 		if($params{google_plusone} || $params{linkedin_share_button} || $params{reddit_button}) {
-			if($params{'align'}) {
-				$rc .= "<p align=\"$params{'align'}\">";
-			} else {
-				$rc .= '<p>';
-			}
+			$rc .= $paragraph;
 		}
 	}
 
@@ -369,11 +384,7 @@ END
 <script type="IN/Share" data-counter="right"></script>
 END
 		if($params{google_plusone} || $params{reddit_button}) {
-			if($params{'align'}) {
-				$rc .= "<p align=\"$params{'align'}\">";
-			} else {
-				$rc .= '<p>';
-			}
+			$rc .= $paragraph;
 		}
 	}
 	if($params{google_plusone}) {
@@ -406,11 +417,7 @@ END
 			</script>
 END
 		if($params{reddit_button}) {
-			if($params{'align'}) {
-				$rc .= "<p align=\"$params{'align'}\">";
-			} else {
-				$rc .= '<p>';
-			}
+			$rc .= $paragraph;
 		}
 	}
 	if($params{reddit_button}) {
