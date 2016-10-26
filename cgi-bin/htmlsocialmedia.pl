@@ -12,8 +12,15 @@ print "Content-type: text/html\n\n";
 my $sm = HTML::SocialMedia->new(twitter => 'nigelhorne');
 );
 
-print '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">',
-	'<HTML><HEAD><TITLE>SocialMedia Test</TITLE></HEAD><BODY><p align="right">',
+print '<!DOCTYPE HTML>',
+	'<HTML><HEAD><TITLE>SocialMedia Test</TITLE>',
+	"<style>.right {\n",
+	"position: absolute;\n",
+	"width: 10%;\n",
+	"right: 0px;\n",
+	"}\n",
+	'</style></HEAD><BODY>',
+	'<div class="right">',
 	$sm->as_string(
 		twitter_follow_button => 1,
 		twitter_tweet_button => 1,
@@ -22,6 +29,5 @@ print '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">',
 		linkedin_share_button => 1,
 		google_plusone => 1,
 		reddit_button => 1,
-		align => 'right',
 	),
-	"</BODY></HTML>\n";
+	"</div></BODY></HTML>\n";
