@@ -330,6 +330,7 @@ END
 				</script>
 				<a href="https://twitter.com/intent/tweet" class="twitter-share-button" data-count="horizontal" data-via="
 END
+			$rc =~ s/\n$//;
 			$rc .= $self->{_twitter} . '"';
 			if($self->{_twitter_related}) {
 				my @related = @{$self->{_twitter_related}};

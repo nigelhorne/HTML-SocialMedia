@@ -6,6 +6,7 @@ Revision history for HTML-SocialMedia
 	Added align argument to as_string()
 	Upgrade to Facebook API v2.8
 	Added facebook_share_button
+	Remove newline before twitter handle
 
 0.25	Sun Aug 16 20:24:43 EDT 2015
 	Fix the Facebook like code
