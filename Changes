@@ -1,6 +1,6 @@
 Revision history for HTML-SocialMedia
 
-0.26
+0.26	Sat Oct 29 10:51:49 EDT 2016
 	Use https URLs when host is on HTTPS
 	Used latest 'tweet this' code from Twitter
 	Added align argument to as_string()
