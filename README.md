@@ -4,7 +4,7 @@
 
 # HTML::SocialMedia
 
-Put social media links into your website
+Put social media links onto your website
 
 # VERSION
 

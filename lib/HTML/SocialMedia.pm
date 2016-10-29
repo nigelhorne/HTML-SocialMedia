@@ -6,7 +6,7 @@ use CGI::Lingua;
 
 =head1 NAME
 
-HTML::SocialMedia - Put social media links into your website
+HTML::SocialMedia - Put social media links onto your website
 
 =head1 VERSION
 
