@@ -220,7 +220,7 @@ sub as_string {
 			# I suppose we could enuerate through other requested languages,
 			# but that is probably not worth the effort.
 
-			my $country = 'en_US';
+			my $country = $self->{_alpha2} || 'en_US';
 			my $res;
 			if($self->{_cache}) {
 				$res = $self->{_cache}->get($country);
@@ -236,7 +236,6 @@ sub as_string {
 
 				my $response;
 
-				$country = $self->{_alpha2};
 				eval {
 					$response = LWP::UserAgent->new(timeout => 10)->request(
 						HTTP::Request->new(GET => "http://connect.facebook.net/$country/sdk.js")
