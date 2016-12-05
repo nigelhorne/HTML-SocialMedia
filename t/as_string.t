@@ -12,6 +12,8 @@ BEGIN {
 }
 
 STRING: {
+	delete $ENV{'LANG'};
+
 	my $sm = new_ok('HTML::SocialMedia');
 	ok(!defined($sm->as_string()));
 
