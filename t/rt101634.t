@@ -42,22 +42,34 @@ sub warn {
 	my $self = shift;
 	my $message = shift;
 
-	# Enable this for debugging
-	# ::diag($message);
+	if($ENV{'TEST_VERBOSE'}) {
+		::diag($message);
+	}
+}
+
+sub info {
+	my $self = shift;
+	my $message = shift;
+
+	if($ENV{'TEST_VERBOSE'}) {
+		::diag($message);
+	}
 }
 
 sub debug {
 	my $self = shift;
 	my $message = shift;
 
-	# Enable this for debugging
-	# ::diag($message);
+	if($ENV{'TEST_VERBOSE'}) {
+		::diag($message);
+	}
 }
 
 sub trace {
 	my $self = shift;
 	my $message = shift;
 
-	# Enable this for debugging
-	# ::diag($message);
+	if($ENV{'TEST_VERBOSE'}) {
+		::diag($message);
+	}
 }

@@ -169,12 +169,22 @@ sub as_string {
 
 	my %params = (ref($_[0]) eq 'HASH') ? %{$_[0]} : @_;
 
+	if($self->{_logger}) {
+		$self->{_logger}->trace('Entering as_string');
+	}
 	my $lingua = $self->{_lingua};
 
 	unless($self->{_alpha2}) {
 		my $alpha2 = $lingua->language_code_alpha2();
 		my $locale = $lingua->locale();	# Locale::Object::Country
 
+		if($self->{_logger}) {
+			if(defined($alpha2)) {
+				$self->{_logger}->debug("language_code_alpha2: $alpha2");
+			} else {
+				$self->{_logger}->debug('language_code_alpha2 returned undef');
+			}
+		}
 		if($alpha2) {
 			my $salpha2 = $lingua->sublanguage_code_alpha2();
 			if((!defined($salpha2)) && defined($locale)) {
@@ -187,6 +197,10 @@ sub as_string {
 				my @l = $locale->languages_official();
 				$alpha2 = lc($l[0]->code_alpha2()) . '_' . uc($locale->code_alpha2());
 			} else {
+				# Can't determine the area, i.e. is it en_GB or en_US?
+				if($self->{_logger}) {
+					$self->{_logger}->debug('Clearing the value of alpha2');
+				}
 				$alpha2 = undef;
 			}
 		}
@@ -205,7 +219,13 @@ sub as_string {
 			}
 			unless($alpha2) {
 				$alpha2 = 'en_GB';
+				if($self->{_logger}) {
+					$self->{_logger}->info("Can't determine country, falling back to en_GB");
+				}
 			}
+		}
+		if($self->{_logger}) {
+			$self->{_logger}->debug("alpha2: $alpha2");
 		}
 		$self->{_alpha2} = $alpha2;
 	}
