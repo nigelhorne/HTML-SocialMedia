@@ -38,7 +38,7 @@ lookups.
 This cache object is an object that understands get() and set() messages,
 such as an L<CHI> object.
 
-Takes optional parameter, which is a L<CGI::Lingua> object.
+Takes optional parameter lingua, which is a L<CGI::Lingua> object.
 
 =head1 SUBROUTINES/METHODS
 
