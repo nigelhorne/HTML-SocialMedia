@@ -2,16 +2,17 @@
 
 use strict;
 use warnings;
-use Test::Most tests => 65;
-use Test::NoWarnings;
+use Test::Most;
 
 eval 'use autodie qw(:all)';	# Test for open/close failures
 
-BEGIN {
-	use_ok('HTML::SocialMedia');
-}
+unless(-e 't/online.enabled') {
+	plan skip_all => 'On-line tests disabled';
+} else {
+	plan tests => 66;
 
-STRING: {
+	use_ok('Test::NoWarnings');
+	use_ok('HTML::SocialMedia');
 	delete $ENV{'LANG'};
 
 	my $sm = new_ok('HTML::SocialMedia');
@@ -45,7 +46,7 @@ STRING: {
 	# HTML::SocialMedia falls back to en_GB.
 	# TODO: It should fall back to fr_FR
 	my $button = $sm->as_string(facebook_like_button => 1);
-	ok(($button =~ /en_GB/) || ($button =~ /fr_US/));
+	like($button, qr/en_GB|fr_US/, 'Contains English or French Facebook button');
 	ok(!defined($sm->as_string(twitter_tweet_button => 1)));
 
 	$ENV{'HTTP_ACCEPT_LANGUAGE'} = 'fr-FR';

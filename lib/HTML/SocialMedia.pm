@@ -258,7 +258,7 @@ sub as_string {
 
 				eval {
 					$response = LWP::UserAgent->new(timeout => 10)->request(
-						HTTP::Request->new(GET => "http://connect.facebook.net/$country/sdk.js")
+						HTTP::Request->new(GET => "http://connect.facebook.com/$country/sdk.js")
 					);
 				};
 				if($@) {
@@ -296,7 +296,7 @@ sub as_string {
 					var js, fjs = d.getElementsByTagName(s)[0];
 					if (d.getElementById(id)) return;
 					js = d.createElement(s); js.id = id;
-					js.src = "//connect.facebook.net/$self->{_country}/sdk.js#xfbml=1&version=v2.8&appId=953901534714390";
+					js.src = "//connect.facebook.com/$self->{_country}/sdk.js#xfbml=1&version=v2.8&appId=953901534714390";
 					fjs.parentNode.insertBefore(js, fjs);
 				}(document, 'script', 'facebook-jssdk'));
 			</script>
