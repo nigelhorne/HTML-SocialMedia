@@ -1,5 +1,6 @@
 [![Linux Build Status](https://travis-ci.org/nigelhorne/HTML-SocialMedia.svg?branch=master)](https://travis-ci.org/nigelhorne/HTML-SocialMedia)
 [![Windows Build status](https://ci.appveyor.com/api/projects/status/7wrih4a1xt96jk72/branch/master?svg=true)](https://ci.appveyor.com/project/nigelhorne/html-socialmedia/branch/master)
+[![Coverage Status](https://coveralls.io/repos/github/nigelhorne/HTML-SocialMedia/badge.svg?branch=master)](https://coveralls.io/github/nigelhorne/HTML-SocialMedia?branch=master)
 [![Dependency Status](https://dependencyci.com/github/nigelhorne/HTML-SocialMedia/badge)](https://dependencyci.com/github/nigelhorne/HTML-SocialMedia)
 
 # HTML::SocialMedia
@@ -8,7 +9,7 @@ Put social media links onto your website
 
 # VERSION
 
-Version 0.25
+Version 0.27
 
 # SYNOPSIS
 
@@ -32,7 +33,7 @@ lookups.
 This cache object is an object that understands get() and set() messages,
 such as an [CHI](https://metacpan.org/pod/CHI) object.
 
-Takes optional parameter, which is a [CGI::Lingua](https://metacpan.org/pod/CGI::Lingua) object.
+Takes optional parameter lingua, which is a [CGI::Lingua](https://metacpan.org/pod/CGI::Lingua) object.
 
 # SUBROUTINES/METHODS
 
@@ -73,9 +74,11 @@ in the language of the user.
         twitter_follow_button => 1,
         twitter_tweet_button => 1,      # button to tweet this page
         facebook_like_button => 1,
+        facebook_share_button => 1,
         linkedin_share_button => 1,
         google_plusone => 1,
         reddit_button => 1,
+        align => 'right',
     );
 
     print '</BODY></HTML>';
@@ -89,11 +92,15 @@ twitter\_tweet\_button: add a button to tweet this page
 
 facebook\_like\_button: add a Facebook like button
 
+facebook\_share\_button: add a Facebook share button
+
 linkedin\_share\_button: add a LinkedIn share button
 
 google\_plusone: add a Google +1 button
 
 reddit\_button: add a Reddit button
+
+align: argument to &lt;p> HTML tag
 
 ## render
 
@@ -111,6 +118,9 @@ you use [HTTP::Cache::Transparent](https://metacpan.org/pod/HTTP::Cache::Transpa
 Please report any bugs or feature requests to `bug-html-socialmedia at rt.cpan.org`, or through
 the web interface at [http://rt.cpan.org/NoAuth/ReportBug.html?Queue=HTML-SocialMedia](http://rt.cpan.org/NoAuth/ReportBug.html?Queue=HTML-SocialMedia).  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
+
+Would be good to have
+    my ($head, $body) = $sm->onload\_render();
 
 # SEE ALSO
 

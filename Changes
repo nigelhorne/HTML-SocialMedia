@@ -1,7 +1,8 @@
 Revision history for HTML-SocialMedia
 
-0.27
+0.27	Tue Dec 27 12:50:54 EST 2016
 	Look in the correct place in the cache
+	Include twitter http / https changes
 
 0.26	Sat Oct 29 10:51:49 EDT 2016
 	Use https URLs when host is on HTTPS
