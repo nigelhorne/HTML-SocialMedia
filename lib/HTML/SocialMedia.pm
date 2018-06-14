@@ -3,6 +3,7 @@ package HTML::SocialMedia;
 use warnings;
 use strict;
 use CGI::Lingua;
+use Carp;
 
 =head1 NAME
 
@@ -168,6 +169,14 @@ sub as_string {
 	my $self = shift;
 
 	my %params = (ref($_[0]) eq 'HASH') ? %{$_[0]} : @_;
+
+	if(ref($_[0]) eq 'HASH') {
+		%params = %{$_[0]};
+	} elsif(ref($_[0])) {
+		Carp::croak('Usage: as_string($options)');
+	} elsif(@_ % 2 == 0) {
+		%params = @_;
+	}
 
 	if($self->{_logger}) {
 		$self->{_logger}->trace('Entering as_string');
@@ -516,7 +525,7 @@ L<http://search.cpan.org/dist/HTML-SocialMedia/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2011-2016 Nigel Horne.
+Copyright 2011-2018 Nigel Horne.
 
 This program is released under the following licence: GPL
 

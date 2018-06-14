@@ -104,8 +104,8 @@ unless(-e 't/online.enabled') {
 	};
 
 	if($@) {
-		diag("CHI not installed");
 		$cache = undef;
+		diag('CHI not installed');
 	} else {
 		diag("Using CHI $CHI::VERSION");
 		my $hash = {};
