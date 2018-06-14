@@ -75,7 +75,7 @@ sub new {
 		if($params{twitter}) {
 			# Languages supported by Twitter according to
 			# https://twitter.com/about/resources/tweetbutton
-			$args{supported} = ['en', 'nl', 'fr', 'fr-fr', 'de', 'id', 'il', 'ja', 'ko', 'pt', 'ru', 'es', 'tr'],
+			$args{supported} = ['en', 'nl', 'fr', 'fr-fr', 'de', 'id', 'il', 'ja', 'ko', 'pt', 'ru', 'es', 'tr'];
 		} else {
 			# TODO: Google plus only supports the languages listed at
 			# http://www.google.com/webmasters/+1/button/index.html
