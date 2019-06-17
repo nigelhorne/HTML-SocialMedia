@@ -17,7 +17,7 @@ perl:
 # sudo: false
 
 before_install:
-  cpanm --skip-satisfied -n Devel::Cover::Report::Coveralls Test::Script Test::Pod::Spelling::CommonMistakes Test::Portability::Files DBD::SQLite DBI
+  cpanm -n Devel::Cover::Report::Coveralls Test::Script Test::Pod::Spelling::CommonMistakes Test::Portability::Files DBD::SQLite DBI
 
 install:
   - cpanm -v --installdeps --notest .
