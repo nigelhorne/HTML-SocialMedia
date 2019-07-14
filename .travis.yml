@@ -14,6 +14,8 @@ perl:
   - "5.14"
   - "5.12"
 
+env: PERL5LIB=~/perl5
+
 sudo: false
 
 before_install:
