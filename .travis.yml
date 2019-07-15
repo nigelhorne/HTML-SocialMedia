@@ -15,7 +15,7 @@ perl:
   - "5.14"
   - "5.12"
 
-# sudo: false
+sudo: false
 
 before_install:
   # - sudo apt-get update -q
