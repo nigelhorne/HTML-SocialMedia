@@ -24,7 +24,7 @@ RT101634: {
 	$ENV{'REMOTE_ADDR'} = '77.106.148.148';
 
 	my $sm = new_ok('HTML::SocialMedia' => [ logger => MyLogger->new() ]);
-	ok(defined($sm->as_string(facebook_like_button => 1)));
+	ok(defined($sm->as_string({ facebook_like_button => 1 })));
 }
 
 # On some platforms it's failing - find out why
