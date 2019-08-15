@@ -20,6 +20,7 @@ t/cv.t
 t/dist.t
 t/gv.t
 t/kwalitee.t
+t/lib/MyLogger.pm
 t/links.t
 t/manifest.t
 t/metrics.t
