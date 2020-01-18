@@ -11,11 +11,11 @@ HTML::SocialMedia - Put social media links onto your website
 
 =head1 VERSION
 
-Version 0.27
+Version 0.28
 
 =cut
 
-our $VERSION = '0.27';
+our $VERSION = '0.28';
 
 =head1 SYNOPSIS
 
@@ -506,10 +506,6 @@ You can also look for information at:
 
 L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=HTML-SocialMedia>
 
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/HTML-SocialMedia>
-
 =item * CPAN Ratings
 
 L<http://cpanratings.perl.org/d/HTML-SocialMedia>
@@ -526,9 +522,9 @@ L<http://search.cpan.org/dist/HTML-SocialMedia/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2011-2018 Nigel Horne.
+Copyright 2011-2020 Nigel Horne.
 
-This program is released under the following licence: GPL
+This program is released under the following licence: GPL2
 
 =cut
 

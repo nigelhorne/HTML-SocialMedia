@@ -78,7 +78,7 @@ unless(-e 't/online.enabled') {
 	ok($sm->as_string(twitter_follow_button => 1) !~ /data-lang="/);
 	ok($sm->as_string(linkedin_share_button => 1) =~ /linkedin/);
 	ok($sm->as_string(twitter_tweet_button => 1) !~ /linkedin/);
-	ok($sm->as_string(twitter_follow_button => 1) eq $sm->render(twitter_follow_button => 1));
+	is($sm->as_string(twitter_follow_button => 1), $sm->render(twitter_follow_button => 1));
 
 	$sm = $sm->new();
 	ok(defined($sm->as_string(facebook_like_button => 1)));
