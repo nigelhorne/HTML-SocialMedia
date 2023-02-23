@@ -137,7 +137,6 @@ in the language of the user.
 	facebook_like_button => 1,
 	facebook_share_button => 1,
 	linkedin_share_button => 1,
-	google_plusone => 1,
 	reddit_button => 1,
 	align => 'right',
     );
@@ -244,7 +243,7 @@ sub as_string {
 			# Grab the Facebook preamble and put it as early as we can
 
 			# See if Facebook supports our wanted language. If not then
-			# I suppose we could enuerate through other requested languages,
+			# I suppose we could enumerate through other requested languages,
 			# but that is probably not worth the effort.
 
 			my $country = $self->{_alpha2} || 'en_US';
@@ -258,7 +257,7 @@ sub as_string {
 					$country = 'en_US';
 				}
 			} else {
-				# Resposnse is of type HTTP::Response
+				# Response is of type HTTP::Response
 				require LWP::UserAgent;
 
 				my $response;

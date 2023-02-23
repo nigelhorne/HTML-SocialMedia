@@ -14,6 +14,7 @@ t/apoc.t
 t/as_string.t
 t/boiler.t
 t/changes.t
+t/comment-spelling.t
 t/coverage.t
 t/critic.t
 t/cv.t
@@ -32,12 +33,12 @@ t/noplan.t
 t/online.enabled
 t/pod-cm.t
 t/pod.t
+t/pod-spelling.t
 t/port.t
 t/prereq.t
 t/rt100242.t
 t/rt101634.t
 t/snippets.t
-t/spelling.t
 t/strict.t
 t/unused.t
 t/used.t
