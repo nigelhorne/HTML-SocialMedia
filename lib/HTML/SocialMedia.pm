@@ -20,7 +20,7 @@ our $VERSION = '0.28';
 =head1 SYNOPSIS
 
 Many websites these days have links and buttons into social media sites.
-This module eases links into Twitter, Facebook and Google's PlusOne.
+This module eases links into Twitter and Facebook.
 
     use HTML::SocialMedia;
     my $sm = HTML::SocialMedia->new();
@@ -156,8 +156,6 @@ facebook_like_button: add a Facebook like button
 facebook_share_button: add a Facebook share button
 
 linkedin_share_button: add a LinkedIn share button
-
-google_plusone: add a Google +1 button
 
 reddit_button: add a Reddit button
 
@@ -522,7 +520,7 @@ L<http://search.cpan.org/dist/HTML-SocialMedia/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2011-2020 Nigel Horne.
+Copyright 2011-2023 Nigel Horne.
 
 This program is released under the following licence: GPL2
 
