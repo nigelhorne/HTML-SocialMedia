@@ -30,10 +30,10 @@ t/metrics.t
 t/namespaces.t
 t/no404s.t
 t/noplan.t
-t/online.enabled
 t/pod-cm.t
-t/pod.t
 t/pod-spelling.t
+t/pod-synopsis.t
+t/pod.t
 t/port.t
 t/prereq.t
 t/rt100242.t
