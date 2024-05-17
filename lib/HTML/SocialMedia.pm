@@ -74,7 +74,7 @@ sub new {
 		my %args;
 		if($params{twitter}) {
 			# Languages supported by Twitter according to
-			# https://twitter.com/about/resources/tweetbutton
+			# https://x.com/about/resources/tweetbutton
 			$args{supported} = ['en', 'nl', 'fr', 'fr-fr', 'de', 'id', 'il', 'ja', 'ko', 'pt', 'ru', 'es', 'tr'];
 		} else {
 			# TODO: Google plus only supports the languages listed at
@@ -320,10 +320,10 @@ END
 		if($params{twitter_follow_button}) {
 			my $language = $lingua->language();
 			if(($language eq 'English') || ($language eq 'Unknown')) {
-				$rc .= '<a href="//twitter.com/' . $self->{_twitter} . '" class="twitter-follow-button">Follow @' . $self->{_twitter} . '</a>';
+				$rc .= '<a href="//x.com/' . $self->{_twitter} . '" class="twitter-follow-button">Follow @' . $self->{_twitter} . '</a>';
 			} else {
 				my $langcode = substr($self->{_alpha2}, 0, 2);
-				$rc .= '<a href="//twitter.com/' . $self->{_twitter} . "\" class=\"twitter-follow-button\" data-lang=\"$langcode\">Follow \@" . $self->{_twitter} . '</a>';
+				$rc .= '<a href="//x.com/' . $self->{_twitter} . "\" class=\"twitter-follow-button\" data-lang=\"$langcode\">Follow \@" . $self->{_twitter} . '</a>';
 			}
 			if($params{twitter_tweet_button}) {
 				$rc .= $paragraph;
@@ -338,7 +338,7 @@ END
 						if (d.getElementById(id)) return t;
 						js = d.createElement(s);
 						js.id = id;
-						js.src = "https://platform.twitter.com/widgets.js";
+						js.src = "https://platform.x.com/widgets.js";
 						fjs.parentNode.insertBefore(js, fjs);
 
 						t._e = [];
@@ -349,7 +349,7 @@ END
 						return t;
 					}(document, "script", "twitter-wjs"));
 				</script>
-				<a href="//twitter.com/intent/tweet" class="twitter-share-button" data-count="horizontal" data-via="
+				<a href="//x.com/intent/tweet" class="twitter-share-button" data-count="horizontal" data-via="
 END
 			$rc =~ s/\n$//;
 			$rc .= $self->{_twitter} . '"';
@@ -357,7 +357,7 @@ END
 				my @related = @{$self->{_twitter_related}};
 				$rc .= ' data-related="' . $related[0] . ':' . $related[1] . '"';
 			}
-			$rc .= '>Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>';
+			$rc .= '>Tweet</a><script type="text/javascript" src="//platform.x.com/widgets.js"></script>';
 		}
 	}
 
