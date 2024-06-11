@@ -62,17 +62,25 @@ info: Object which understands host_name messages, such as L<CGI::Info>.
 =cut
 
 sub new {
-	my $proto = shift;
+	my $class = shift;
+	my %args = (ref($_[0]) eq 'HASH') ? %{$_[0]} : @_;
 
-	my $class = ref($proto) || $proto;
-	return unless(defined($class));
+	if(!defined($class)) {
+		# Using HTML::SocialMedia->new(), not HTML::SocialMedia::new()
+		# carp(__PACKAGE__, ' use ->new() not ::new() to instantiate');
+		# return;
 
-	my %params = (ref($_[0]) eq 'HASH') ? %{$_[0]} : @_;
+		# FIXME: this only works when no arguments are given
+		$class = __PACKAGE__;
+	} elsif(ref($class)) {
+		# clone the given object
+		return bless { %{$class}, %args }, ref($class);
+	}
 
-	my $lingua = $params{lingua};
+	my $lingua = $args{lingua};
 	unless(defined($lingua)) {
 		my %args;
-		if($params{twitter}) {
+		if($args{twitter}) {
 			# Languages supported by Twitter according to
 			# https://x.com/about/resources/tweetbutton
 			$args{supported} = ['en', 'nl', 'fr', 'fr-fr', 'de', 'id', 'il', 'ja', 'ko', 'pt', 'ru', 'es', 'tr'];
@@ -90,13 +98,13 @@ sub new {
 				$args{supported} = [];
 			}
 		}
-		if($params{cache}) {
-			$args{cache} = $params{cache};
+		if($args{cache}) {
+			$args{cache} = $args{cache};
 		}
-		if($params{logger}) {
-			$args{logger} = $params{logger};
+		if($args{logger}) {
+			$args{logger} = $args{logger};
 		}
-		$lingua = $params{lingua} || CGI::Lingua->new(%args);
+		$lingua = $args{lingua} || CGI::Lingua->new(%args);
 		if((!defined($lingua)) && scalar($args{supported})) {
 			$args{supported} = [];
 			$lingua = CGI::Lingua->new(%args);
@@ -105,11 +113,11 @@ sub new {
 
 	return bless {
 		_lingua => $lingua,
-		_twitter => $params{twitter},
-		_twitter_related => $params{twitter_related},
-		_cache => $params{cache},
-		_logger => $params{logger},
-		_info => $params{info},
+		_twitter => $args{twitter},
+		_twitter_related => $args{twitter_related},
+		_cache => $args{cache},
+		_logger => $args{logger},
+		_info => $args{info},
 		# _alpha2 => undef,
 	}, $class;
 }
