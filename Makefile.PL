@@ -25,6 +25,15 @@ if($online_tests) {
 	unlink('t/online.enabled');
 }
 
+my $dist = {
+	COMPRESS => 'gzip -9f',
+	SUFFIX => 'gz'
+};
+
+if($^O eq 'darwin') {
+	$dist->{'TAR'} = 'gtar';
+}
+
 WriteMakefile(
     NAME                => 'HTML::SocialMedia',
     AUTHOR              => q{Nigel Horne <njh@bandsman.co.uk>},
@@ -36,9 +45,6 @@ WriteMakefile(
       : ()),
     PL_FILES            => {},
     BUILD_REQUIRES => {
-	'Test::Most' => 0,
-	'Test::Needs' => 0,
-	'Test::NoWarnings' => 0,
 	# 'Test::Kwalitee' => 0,
 	'CGI::Info' => 0.10,	# Needs protocol()
 	'Carp' => 0,
@@ -47,9 +53,14 @@ WriteMakefile(
 	'I18N::LangTags::Detect' => 0,
 	'LWP::UserAgent' => 0,
 	'LWP::Protocol::https' => 0,
-    },
-    dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
+    }, TEST_REQUIRES => {
+	'Test::DescribeMe' => 0,
+	'Test::Most' => 0,
+	'Test::Needs' => 0,
+	'Test::NoWarnings' => 0,
+	},
     clean               => { FILES => 'HTML-SocialMedia-*' },
+	dist => $dist,
     META_MERGE		=> {
     	'meta-spec' => { version => 2 },
     	resources => {
