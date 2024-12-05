@@ -64,6 +64,8 @@ For the above, twitter and twitter_related still work
 
 sub new {
 	my $class = shift;
+
+	# Handle hash or hashref arguments
 	my %args = (ref($_[0]) eq 'HASH') ? %{$_[0]} : @_;
 
 	if(!defined($class)) {
@@ -115,6 +117,7 @@ sub new {
 		}
 	}
 
+	# Return the blessed object
 	return bless {
 		_lingua => $lingua,
 		_twitter => $args{twitter},
@@ -177,6 +180,8 @@ align: argument to <p> HTML tag
 sub as_string {
 	my $self = shift;
 
+	$self->_trace('Entering as_string');
+
 	my %params = (ref($_[0]) eq 'HASH') ? %{$_[0]} : @_;
 
 	if(ref($_[0]) eq 'HASH') {
@@ -187,9 +192,6 @@ sub as_string {
 		%params = @_;
 	}
 
-	if($self->{_logger}) {
-		$self->{_logger}->trace('Entering as_string');
-	}
 	my $lingua = $self->{_lingua};
 
 	unless($self->{_alpha2}) {
@@ -214,9 +216,7 @@ sub as_string {
 				$alpha2 = lc($l[0]->code_alpha2()) . '_' . uc($locale->code_alpha2());
 			} else {
 				# Can't determine the area, i.e. is it en_GB or en_US?
-				if($self->{_logger}) {
-					$self->{_logger}->debug('Clearing the value of alpha2');
-				}
+				$self->_debug('Clearing the value of alpha2');
 				$alpha2 = undef;
 			}
 		}
@@ -235,14 +235,10 @@ sub as_string {
 			}
 			unless($alpha2) {
 				$alpha2 = 'en_GB';
-				if($self->{_logger}) {
-					$self->{_logger}->info("Can't determine country, falling back to en_GB");
-				}
+				$self->_info("Can't determine country, falling back to en_GB");
 			}
 		}
-		if($self->{_logger}) {
-			$self->{_logger}->debug("alpha2: $alpha2");
-		}
+		$self->_debug("alpha2: $alpha2");
 		$self->{_alpha2} = $alpha2;
 	}
 
@@ -278,9 +274,7 @@ sub as_string {
 					);
 				};
 				if($@) {
-					if($self->{_logger}) {
-						$self->{_logger}->info($@);
-					}
+					$self->_info($@);
 					$response = undef;
 				}
 				if(defined($response) && $response->is_success()) {
@@ -518,6 +512,16 @@ sub _debug {
 	$self->_log('debug', @_);
 }
 
+sub _info {
+	my $self = shift;
+	$self->_info('info', @_);
+}
+
+sub _trace {
+	my $self = shift;
+	$self->_trace('trace', @_);
+}
+
 # Helper routine to parse the arguments given to a function,
 #	allowing the caller to call the function in anyway that they want
 #	e.g. foo('bar'), foo(arg => 'bar'), foo({ arg => 'bar' }) all mean the same
@@ -578,23 +582,25 @@ You can also look for information at:
 
 =over 4
 
+=item * MetaCPAN
+
+L<https://metacpan.org/dist/HTML-SocialMedia>
+
 =item * RT: CPAN's request tracker
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=HTML-SocialMedia>
+L<https://rt.cpan.org/NoAuth/Bugs.html?Dist=HTML-SocialMedia>
 
-=item * CPAN Ratings
+=item * CPAN Testers' Matrix
 
-L<http://cpanratings.perl.org/d/HTML-SocialMedia>
+L<http://matrix.cpantesters.org/?dist=HTML-SocialMedia>
 
-=item * Search CPAN
+=item * CPAN Testers Dependencies
 
-L<http://search.cpan.org/dist/HTML-SocialMedia/>
+L<http://deps.cpantesters.org/?module=HTML::SocialMedia>
 
 =back
 
-
 =head1 ACKNOWLEDGEMENTS
-
 
 =head1 LICENSE AND COPYRIGHT
 
