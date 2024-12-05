@@ -514,12 +514,12 @@ sub _debug {
 
 sub _info {
 	my $self = shift;
-	$self->_info('info', @_);
+	$self->_log('info', @_);
 }
 
 sub _trace {
 	my $self = shift;
-	$self->_trace('trace', @_);
+	$self->_log('trace', @_);
 }
 
 # Helper routine to parse the arguments given to a function,
