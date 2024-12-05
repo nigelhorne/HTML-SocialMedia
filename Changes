@@ -3,6 +3,8 @@ Revision history for HTML-SocialMedia
 0.30
 	Use gtar to create a distribution on Macs
 	Use Test::DescribeMe to simplify tests
+	Added x_ arguments, as the same as twitter_ arguments
+	Added set_logger()
 
 0.29	Tue Jun 11 09:07:25 EDT 2024
 	Removed documentation of Google PlusOne

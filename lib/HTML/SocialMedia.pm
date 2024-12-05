@@ -48,16 +48,17 @@ Takes optional parameter lingua, which is a L<CGI::Lingua> object.
 Creates a HTML::SocialMedia object.
 
     use HTML::SocialMedia;
-    my $sm = HTML::SocialMedia->new(twitter => 'example');
+    my $sm = HTML::SocialMedia->new(x => 'example');
     # ...
 
 =head3 Optional parameters
 
-twitter: twitter account name
-twitter_related: array of 2 elements - the name and description of a related account
 cache: This object will be an instantiation of a class that understands get and
 set, such as L<CHI>.
 info: Object which understands host_name messages, such as L<CGI::Info>.
+x: x account name
+x_related: array of 2 elements - the name and description of a related account
+For the above, twitter and twitter_related still work
 
 =cut
 
@@ -80,6 +81,9 @@ sub new {
 	my $lingua = $args{lingua};
 	unless(defined($lingua)) {
 		my %args;
+		if($args{'x'}) {
+			$args{'twitter'} ||= $args{'x'};
+		}
 		if($args{twitter}) {
 			# Languages supported by Twitter according to
 			# https://x.com/about/resources/tweetbutton
@@ -130,8 +134,8 @@ in the language of the user.
 
     use HTML::SocialMedia;
     my $sm = HTML::SocialMedia->new(
-	twitter => 'mytwittername',
-	twitter_related => [ 'someonelikeme', 'another twitter feed' ]
+	x => 'mytwittername',
+	s_related => [ 'someonelikeme', 'another x feed' ]
     );
 
     print "Content-type: text/html\n\n";
@@ -140,8 +144,8 @@ in the language of the user.
     print '<HTML><HEAD></HEAD><BODY>';
 
     print $sm->as_string(
-	twitter_follow_button => 1,
-	twitter_tweet_button => 1,	# button to tweet this page
+	x_follow_button => 1,
+	x_tweet_button => 1,	# button to tweet this page
 	facebook_like_button => 1,
 	facebook_share_button => 1,
 	linkedin_share_button => 1,
@@ -154,15 +158,15 @@ in the language of the user.
 
 =head3 Optional parameters
 
-twitter_follow_button: add a button to follow the account
-
-twitter_tweet_button: add a button to tweet this page
-
 facebook_like_button: add a Facebook like button
 
 facebook_share_button: add a Facebook share button
 
 linkedin_share_button: add a LinkedIn share button
+
+x_follow_button: add a button to follow the account
+
+x_tweet_button: add a button to tweet this page
 
 reddit_button: add a Reddit button
 
@@ -192,12 +196,10 @@ sub as_string {
 		my $alpha2 = $lingua->language_code_alpha2();
 		my $locale = $lingua->locale();	# Locale::Object::Country
 
-		if($self->{_logger}) {
-			if(defined($alpha2)) {
-				$self->{_logger}->debug("language_code_alpha2: $alpha2");
-			} else {
-				$self->{_logger}->debug('language_code_alpha2 returned undef');
-			}
+		if(defined($alpha2)) {
+			$self->_debug("language_code_alpha2: $alpha2");
+		} else {
+			$self->_debug('language_code_alpha2 returned undef');
 		}
 		if($alpha2) {
 			my $salpha2 = $lingua->sublanguage_code_alpha2();
@@ -323,6 +325,9 @@ END
 	} else {
 		$paragraph = '<p>';
 	}
+
+	$params{'twitter_follow_button'} ||= $params{'x_follow_button'};
+	$params{'twitter_tweet_button'} ||= $params{'x_tweet_button'};
 
 	if($self->{_twitter}) {
 		if($params{twitter_follow_button}) {
@@ -475,6 +480,72 @@ sub render {
 	my ($self, %params) = @_;
 
 	return $self->as_string(%params);
+}
+
+=head2	set_logger
+
+Sets class or code reference that will be used for logging.
+
+=cut
+
+sub set_logger
+{
+	my $self = shift;
+	my $args = $self->_get_params('logger', @_);
+
+	if(defined($args->{'logger'})) {
+		$self->{'_logger'} = $args->{'logger'};
+		return $self;
+	}
+	Carp::croak('Usage: set_logger(logger => $logger)')
+}
+
+# Helper routines for logger()
+sub _log {
+	my ($self, $level, @messages) = @_;
+
+	if(my $logger = $self->{'_logger'}) {
+		if(ref($logger) eq 'CODE') {
+			$logger->({ level => $level, message => \@messages });
+		} else {
+			$logger->$level(@messages);
+		}
+	}
+}
+
+sub _debug {
+	my $self = shift;
+	$self->_log('debug', @_);
+}
+
+# Helper routine to parse the arguments given to a function,
+#	allowing the caller to call the function in anyway that they want
+#	e.g. foo('bar'), foo(arg => 'bar'), foo({ arg => 'bar' }) all mean the same
+#	when called _get_params('arg', @_);
+sub _get_params
+{
+	shift;  # Discard the first argument (typically $self)
+	my $default = shift;
+
+	# Directly return hash reference if the first parameter is a hash reference
+	return $_[0] if ref $_[0] eq 'HASH';
+
+	my %rc;
+	my $num_args = scalar @_;
+
+	# Populate %rc based on the number and type of arguments
+	if(($num_args == 1) && (defined $default)) {
+		# %rc = ($default => shift);
+		return { $default => shift };
+	} elsif($num_args == 1) {
+		Carp::croak('Usage: ', __PACKAGE__, '->', (caller(1))[3], '()');
+	} elsif($num_args == 0 && defined $default) {
+		Carp::croak('Usage: ', __PACKAGE__, '->', (caller(1))[3], '($default => \$val)');
+	} elsif(($num_args % 2) == 0) {
+		%rc = @_;
+	}
+
+	return \%rc;
 }
 
 =head1 AUTHOR
