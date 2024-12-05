@@ -58,6 +58,7 @@ set, such as L<CHI>.
 info: Object which understands host_name messages, such as L<CGI::Info>.
 x: x account name
 x_related: array of 2 elements - the name and description of a related account
+
 For the above, twitter and twitter_related still work
 
 =cut
@@ -158,6 +159,9 @@ in the language of the user.
 
     print '</BODY></HTML>';
     print "\n";
+
+If no social media links have been requested,
+as_string() returns undef
 
 =head3 Optional parameters
 
