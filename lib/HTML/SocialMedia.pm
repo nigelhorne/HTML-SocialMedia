@@ -32,7 +32,8 @@ HTML::SocialMedia ideal for running on multilingual sites.
 Takes optional parameter logger, an object which is used for warnings and
 traces.
 This logger object is an object that understands warn() and trace() messages,
-such as a L<Log::Log4perl> object.
+such as a L<Log::Log4perl> object,
+or a reference to code.
 
 Takes optional parameter cache, an object which is used to cache country
 lookups.
@@ -574,7 +575,6 @@ Would be good to have
     my ($head, $body) = $sm->onload_render();
 
 =head1 SEE ALSO
-
 
 =head1 SUPPORT
 
