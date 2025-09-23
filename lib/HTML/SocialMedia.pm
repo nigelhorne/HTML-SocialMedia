@@ -2,8 +2,10 @@ package HTML::SocialMedia;
 
 use warnings;
 use strict;
+
 use CGI::Lingua;
 use Carp;
+use Params::Get 0.13;
 
 =head1 NAME
 
@@ -68,7 +70,7 @@ sub new {
 	my $class = shift;
 
 	# Handle hash or hashref arguments
-	my %args = (ref($_[0]) eq 'HASH') ? %{$_[0]} : @_;
+	my $params = Params::Get::get_params(undef, \@_) || {};
 
 	if(!defined($class)) {
 		# Using HTML::SocialMedia->new(), not HTML::SocialMedia::new()
@@ -79,12 +81,12 @@ sub new {
 		$class = __PACKAGE__;
 	} elsif(ref($class)) {
 		# clone the given object
-		return bless { %{$class}, %args }, ref($class);
+		return bless { %{$class}, %{$params} }, ref($class);
 	}
 
-	my $lingua = $args{lingua};
+	my $lingua = $params->{lingua};
 	unless(defined($lingua)) {
-		my %args;
+		my %args = %{$params};
 		if($args{'x'}) {
 			$args{'twitter'} ||= $args{'x'};
 		}
@@ -122,11 +124,11 @@ sub new {
 	# Return the blessed object
 	return bless {
 		_lingua => $lingua,
-		_twitter => $args{twitter},
-		_twitter_related => $args{twitter_related},
-		_cache => $args{cache},
-		_logger => $args{logger},
-		_info => $args{info},
+		_twitter => $params->{twitter},
+		_twitter_related => $params->{twitter_related},
+		_cache => $params->{cache},
+		_logger => $params->{logger},
+		_info => $params->{info},
 		# _alpha2 => undef,
 	}, $class;
 }

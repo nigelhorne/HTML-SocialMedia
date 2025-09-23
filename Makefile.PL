@@ -53,6 +53,7 @@ WriteMakefile(
 	'I18N::LangTags::Detect' => 0,
 	'LWP::UserAgent' => 0,
 	'LWP::Protocol::https' => 0,
+	'Params::Get' => 0.13,
     }, TEST_REQUIRES => {
 	'Test::DescribeMe' => 0,
 	'Test::Most' => 0,
