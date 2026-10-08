@@ -2,9 +2,8 @@
 
 use strict;
 use warnings;
-use Test::Most tests => 3;
-use lib 't/lib';
-use MyLogger;
+use Test::Most tests => 4;
+use Test::Log::Abstraction;
 
 # Test for "Use of uninitialized value in lc at /home/nigelhorne/perlmods/share/perl/5.14.2/HTML/SocialMedia.pm line 190"
 
@@ -25,6 +24,6 @@ RT101634: {
 	$ENV{'HTTP_ACCEPT_LANGUAGE'} = 'no-NO';
 	$ENV{'REMOTE_ADDR'} = '77.106.148.148';
 
-	my $sm = new_ok('HTML::SocialMedia' => [ logger => MyLogger->new() ]);
+	my $sm = new_ok('HTML::SocialMedia' => [ logger => new_ok('Test::Log::Abstraction') ]);
 	ok(defined($sm->as_string({ facebook_like_button => 1 })));
 }

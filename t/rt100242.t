@@ -3,8 +3,7 @@
 use strict;
 use warnings;
 use Test::Most tests => 3;
-use lib 't/lib';
-use MyLogger;
+use Test::Log::Abstraction;
 
 # Test for https://rt.cpan.org/Ticket/Display.html?id=100242
 
@@ -25,6 +24,6 @@ RT100242: {
 	$ENV{'HTTP_ACCEPT_LANGUAGE'} = 'hr-HR';
 	$ENV{'REMOTE_ADDR'} = '195.29.95.225';
 
-	my $sm = new_ok('HTML::SocialMedia' => [ logger => MyLogger->new() ]);
+	my $sm = new_ok('HTML::SocialMedia' => [ logger => Test::Log::Abstraction->new() ]);
 	ok(defined($sm->as_string(facebook_like_button => 1)));
 }
